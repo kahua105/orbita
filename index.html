@@ -1,710 +1,1212 @@
 <!DOCTYPE html>
 <html lang="ja">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ORBITA — The City of Resonance</title>
-<meta name="description" content="広告ゼロ。競争ゼロ。いいねゼロ。尊厳だけが通貨になるデジタル文明。">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Noto+Serif+JP:wght@300;400;700&family=Inter:wght@300;400&display=swap" rel="stylesheet">
-<style>
-  /* ============ RESET & BASE ============ */
-  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
-  
-  :root {
-    --void: #0a0a1a;
-    --indigo: #0d0d3b;
-    --navy: #191970;
-    --gold: #FFD700;
-    --gold-dim: rgba(255, 215, 0, 0.3);
-    --gold-glow: rgba(255, 215, 0, 0.08);
-    --white: #f0ede6;
-    --white-dim: rgba(240, 237, 230, 0.6);
-    --nebula: #2a0845;
-  }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ORBITA — The City of Resonance</title>
+  <meta name="description" content="広告ゼロ。競争ゼロ。いいねゼロ。尊厳だけが通貨になるデジタル文明。">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Noto+Serif+JP:wght@300;400;700&family=Inter:wght@300;400&display=swap"
+    rel="stylesheet">
+  <style>
+    /* ============ RESET & BASE ============ */
+    *,
+    *::before,
+    *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
-  html { scroll-behavior: smooth; }
-  
-  body {
-    background: var(--void);
-    color: var(--white);
-    font-family: 'Noto Serif JP', serif;
-    line-height: 1.9;
-    overflow-x: hidden;
-  }
+    :root {
+      --void: #0a0a1a;
+      --indigo: #0d0d3b;
+      --navy: #191970;
+      --gold: #FFD700;
+      --gold-dim: rgba(255, 215, 0, 0.3);
+      --gold-glow: rgba(255, 215, 0, 0.08);
+      --white: #f0ede6;
+      --white-dim: rgba(240, 237, 230, 0.6);
+      --nebula: #2a0845;
+    }
 
-  /* ============ STAR FIELD ============ */
-  .starfield {
-    position: fixed;
-    top: 0; left: 0;
-    width: 100%; height: 100%;
-    z-index: 0;
-    pointer-events: none;
-  }
+    html {
+      scroll-behavior: smooth;
+    }
 
-  .star {
-    position: absolute;
-    border-radius: 50%;
-    background: var(--white);
-    animation: twinkle var(--duration) ease-in-out infinite;
-  }
+    body {
+      background: var(--void);
+      color: var(--white);
+      font-family: 'Noto Serif JP', serif;
+      line-height: 1.9;
+      overflow-x: hidden;
+      cursor: none;
+    }
 
-  @keyframes twinkle {
-    0%, 100% { opacity: var(--min-opacity); }
-    50% { opacity: var(--max-opacity); }
-  }
+    /* ============ CUSTOM CURSOR ============ */
+    .cursor-dot {
+      width: 8px;
+      height: 8px;
+      background: var(--gold);
+      border-radius: 50%;
+      position: fixed;
+      pointer-events: none;
+      z-index: 9999;
+      transition: transform 0.1s ease;
+      box-shadow: 0 0 20px rgba(255, 215, 0, 0.4);
+      mix-blend-mode: screen;
+    }
 
-  /* ============ SECTIONS ============ */
-  section {
-    position: relative;
-    z-index: 1;
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    padding: 80px 24px;
-  }
+    .cursor-ring {
+      width: 36px;
+      height: 36px;
+      border: 1px solid var(--gold-dim);
+      border-radius: 50%;
+      position: fixed;
+      pointer-events: none;
+      z-index: 9998;
+      transition: width 0.3s ease, height 0.3s ease, border-color 0.3s ease;
+      transform: translate(-50%, -50%);
+    }
 
-  .content-wrapper {
-    max-width: 680px;
-    width: 100%;
-  }
+    .cursor-ring.hover {
+      width: 56px;
+      height: 56px;
+      border-color: var(--gold);
+    }
 
-  /* ============ HERO ============ */
-  .hero {
-    text-align: center;
-    min-height: 100vh;
-    background: radial-gradient(ellipse at 50% 80%, var(--indigo) 0%, var(--void) 70%);
-  }
+    /* ============ STAR FIELD ============ */
+    .starfield {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+      pointer-events: none;
+    }
 
-  .hero-logo {
-    font-family: 'Playfair Display', serif;
-    font-size: clamp(3rem, 8vw, 6rem);
-    font-weight: 700;
-    letter-spacing: 0.15em;
-    color: var(--gold);
-    text-shadow: 0 0 60px rgba(255, 215, 0, 0.3);
-    animation: logoReveal 2s ease-out;
-    margin-bottom: 16px;
-  }
+    .star {
+      position: absolute;
+      border-radius: 50%;
+      background: var(--white);
+      animation: twinkle var(--duration) ease-in-out infinite;
+    }
 
-  @keyframes logoReveal {
-    0% { opacity: 0; transform: translateY(30px); letter-spacing: 0.5em; }
-    100% { opacity: 1; transform: translateY(0); letter-spacing: 0.15em; }
-  }
+    @keyframes twinkle {
 
-  .hero-sub {
-    font-family: 'Playfair Display', serif;
-    font-size: clamp(0.9rem, 2vw, 1.2rem);
-    color: var(--white-dim);
-    letter-spacing: 0.3em;
-    font-style: italic;
-    animation: fadeIn 2s ease-out 0.5s both;
-  }
+      0%,
+      100% {
+        opacity: var(--min-opacity);
+      }
 
-  .hero-tagline {
-    margin-top: 48px;
-    font-size: clamp(1rem, 2.5vw, 1.3rem);
-    color: var(--white);
-    font-weight: 300;
-    line-height: 2.2;
-    animation: fadeIn 2s ease-out 1s both;
-  }
+      50% {
+        opacity: var(--max-opacity);
+      }
+    }
 
-  .hero-tagline .gold { color: var(--gold); }
+    /* ============ FLOATING PARTICLES ============ */
+    .particle {
+      position: fixed;
+      width: 2px;
+      height: 2px;
+      background: var(--gold);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0;
+      animation: particleFloat var(--float-duration) ease-in-out infinite;
+      animation-delay: var(--float-delay);
+      box-shadow: 0 0 6px rgba(255, 215, 0, 0.3);
+    }
 
-  .scroll-hint {
-    position: absolute;
-    bottom: 40px;
-    left: 50%;
-    transform: translateX(-50%);
-    animation: fadeIn 2s ease-out 2s both, float 3s ease-in-out infinite;
-    color: var(--gold-dim);
-    font-size: 0.8rem;
-    letter-spacing: 0.2em;
-    text-align: center;
-  }
+    @keyframes particleFloat {
+      0% {
+        opacity: 0;
+        transform: translateY(0) translateX(0);
+      }
 
-  .scroll-hint::after {
-    content: '';
-    display: block;
-    width: 1px;
-    height: 40px;
-    background: linear-gradient(to bottom, var(--gold-dim), transparent);
-    margin: 12px auto 0;
-  }
+      20% {
+        opacity: 0.6;
+      }
 
-  @keyframes float {
-    0%, 100% { transform: translateX(-50%) translateY(0); }
-    50% { transform: translateX(-50%) translateY(8px); }
-  }
+      80% {
+        opacity: 0.3;
+      }
 
-  @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(20px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
+      100% {
+        opacity: 0;
+        transform: translateY(-100vh) translateX(var(--drift));
+      }
+    }
 
-  /* ============ DIVIDER ============ */
-  .divider {
-    width: 60px;
-    height: 1px;
-    background: linear-gradient(to right, transparent, var(--gold), transparent);
-    margin: 48px auto;
-  }
+    /* ============ SECTIONS ============ */
+    section {
+      position: relative;
+      z-index: 1;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 80px 24px;
+    }
 
-  /* ============ SECTION: WHAT IS ============ */
-  .what-is {
-    background: linear-gradient(180deg, var(--void) 0%, var(--indigo) 50%, var(--void) 100%);
-    text-align: center;
-  }
+    .content-wrapper {
+      max-width: 680px;
+      width: 100%;
+    }
 
-  .section-title {
-    font-family: 'Playfair Display', serif;
-    font-size: clamp(1.5rem, 4vw, 2.5rem);
-    font-weight: 400;
-    color: var(--gold);
-    margin-bottom: 12px;
-    letter-spacing: 0.05em;
-  }
+    /* ============ HERO ============ */
+    .hero {
+      text-align: center;
+      min-height: 100vh;
+      background: radial-gradient(ellipse at 50% 80%, var(--indigo) 0%, var(--void) 70%);
+    }
 
-  .section-title-jp {
-    font-size: clamp(0.85rem, 2vw, 1rem);
-    color: var(--white-dim);
-    margin-bottom: 40px;
-    letter-spacing: 0.15em;
-  }
+    /* Letter-by-letter logo animation */
+    .hero-logo {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(3rem, 8vw, 6rem);
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      color: var(--gold);
+      text-shadow: 0 0 60px rgba(255, 215, 0, 0.3);
+      margin-bottom: 16px;
+      overflow: hidden;
+    }
 
-  .zero-list {
-    display: flex;
-    justify-content: center;
-    gap: 40px;
-    flex-wrap: wrap;
-    margin: 40px 0;
-  }
+    .hero-logo .letter {
+      display: inline-block;
+      opacity: 0;
+      transform: translateY(40px) scale(0.8);
+      animation: letterReveal 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+      animation-delay: var(--delay);
+    }
 
-  .zero-item {
-    text-align: center;
-  }
+    @keyframes letterReveal {
+      0% {
+        opacity: 0;
+        transform: translateY(40px) scale(0.8);
+        filter: blur(8px);
+      }
 
-  .zero-number {
-    font-family: 'Playfair Display', serif;
-    font-size: 3rem;
-    color: var(--gold);
-    font-weight: 700;
-    line-height: 1;
-  }
+      60% {
+        opacity: 1;
+        filter: blur(0);
+      }
 
-  .zero-label {
-    font-size: 0.85rem;
-    color: var(--white-dim);
-    margin-top: 4px;
-    letter-spacing: 0.1em;
-  }
+      80% {
+        transform: translateY(-5px) scale(1.02);
+      }
 
-  .body-text {
-    font-size: clamp(0.95rem, 1.8vw, 1.1rem);
-    color: var(--white);
-    font-weight: 300;
-    line-height: 2;
-    text-align: left;
-  }
+      100% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+        filter: blur(0);
+      }
+    }
 
-  .body-text-center {
-    text-align: center;
-  }
+    .hero-sub {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(0.9rem, 2vw, 1.2rem);
+      color: var(--white-dim);
+      letter-spacing: 0.3em;
+      font-style: italic;
+      opacity: 0;
+      animation: fadeSlideUp 1.2s ease-out 1.2s forwards;
+    }
 
-  .highlight {
-    color: var(--gold);
-    font-weight: 400;
-  }
+    .hero-tagline {
+      margin-top: 48px;
+      font-size: clamp(1rem, 2.5vw, 1.3rem);
+      color: var(--white);
+      font-weight: 300;
+      line-height: 2.2;
+    }
 
-  /* ============ SECTION: THE QUESTION ============ */
-  .the-question {
-    background: var(--void);
-    text-align: center;
-    min-height: 80vh;
-  }
+    .hero-tagline .line {
+      display: block;
+      opacity: 0;
+      animation: fadeSlideUp 1s ease-out forwards;
+    }
 
-  .big-question {
-    font-size: clamp(1.3rem, 3.5vw, 2rem);
-    color: var(--white);
-    font-weight: 300;
-    line-height: 2.5;
-    margin-bottom: 32px;
-  }
+    .hero-tagline .line:nth-child(1) {
+      animation-delay: 1.6s;
+    }
 
-  .big-question .gold-line {
-    display: block;
-    color: var(--gold);
-    font-size: clamp(1.5rem, 4vw, 2.5rem);
-    font-weight: 700;
-    margin-top: 16px;
-  }
+    .hero-tagline .line:nth-child(2) {
+      animation-delay: 2.0s;
+    }
 
-  /* ============ SECTION: 7 LOSSES ============ */
-  .losses {
-    background: linear-gradient(180deg, var(--void) 0%, #0f0a20 50%, var(--void) 100%);
-  }
+    .hero-tagline .gold {
+      color: var(--gold);
+    }
 
-  .loss-item {
-    padding: 40px 0;
-    border-bottom: 1px solid rgba(255, 215, 0, 0.08);
-  }
+    .scroll-hint {
+      position: absolute;
+      bottom: 40px;
+      left: 50%;
+      transform: translateX(-50%);
+      color: var(--gold-dim);
+      font-size: 0.8rem;
+      letter-spacing: 0.2em;
+      text-align: center;
+      opacity: 0;
+      animation: fadeSlideUp 1s ease-out 2.8s forwards, float 3s ease-in-out 3.8s infinite;
+    }
 
-  .loss-item:last-child { border-bottom: none; }
+    .scroll-hint::after {
+      content: '';
+      display: block;
+      width: 1px;
+      height: 40px;
+      background: linear-gradient(to bottom, var(--gold-dim), transparent);
+      margin: 12px auto 0;
+    }
 
-  .loss-number {
-    font-family: 'Playfair Display', serif;
-    font-size: 0.8rem;
-    color: var(--gold-dim);
-    letter-spacing: 0.3em;
-    margin-bottom: 8px;
-  }
+    @keyframes float {
 
-  .loss-title {
-    font-size: clamp(1.1rem, 2.5vw, 1.4rem);
-    color: var(--white);
-    font-weight: 400;
-    margin-bottom: 12px;
-  }
+      0%,
+      100% {
+        transform: translateX(-50%) translateY(0);
+      }
 
-  .loss-desc {
-    font-size: 0.95rem;
-    color: var(--white-dim);
-    font-weight: 300;
-    line-height: 1.9;
-    margin-bottom: 16px;
-  }
+      50% {
+        transform: translateX(-50%) translateY(8px);
+      }
+    }
 
-  .loss-response {
-    font-size: 0.9rem;
-    color: var(--gold);
-    padding-left: 16px;
-    border-left: 2px solid var(--gold-dim);
-    font-weight: 300;
-  }
+    @keyframes fadeSlideUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
 
-  /* ============ SECTION: THE CITY ============ */
-  .the-city {
-    background: radial-gradient(ellipse at 50% 50%, var(--navy) 0%, var(--void) 70%);
-    text-align: center;
-  }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
 
-  .city-features {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 32px;
-    margin: 40px 0;
-  }
+    /* ============ DIVIDER ============ */
+    .divider {
+      width: 60px;
+      height: 1px;
+      background: linear-gradient(to right, transparent, var(--gold), transparent);
+      margin: 48px auto;
+    }
 
-  @media (max-width: 500px) {
-    .city-features { grid-template-columns: 1fr; }
-  }
+    /* Animated divider grows from center */
+    .divider.reveal.visible {
+      animation: dividerGrow 1s ease-out forwards;
+    }
 
-  .city-feature {
-    text-align: center;
-    padding: 32px 16px;
-    border: 1px solid var(--gold-glow);
-    border-radius: 4px;
-    background: rgba(13, 13, 59, 0.3);
-    transition: border-color 0.3s, background 0.3s;
-  }
+    @keyframes dividerGrow {
+      from {
+        width: 0;
+        opacity: 0;
+      }
 
-  .city-feature:hover {
-    border-color: var(--gold-dim);
-    background: rgba(13, 13, 59, 0.5);
-  }
+      to {
+        width: 60px;
+        opacity: 1;
+      }
+    }
 
-  .city-feature-icon {
-    font-size: 1.8rem;
-    margin-bottom: 12px;
-  }
+    /* ============ SECTION: WHAT IS ============ */
+    .what-is {
+      background: linear-gradient(180deg, var(--void) 0%, var(--indigo) 50%, var(--void) 100%);
+      text-align: center;
+    }
 
-  .city-feature-name {
-    font-size: 1rem;
-    color: var(--gold);
-    margin-bottom: 4px;
-  }
+    .section-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.5rem, 4vw, 2.5rem);
+      font-weight: 400;
+      color: var(--gold);
+      margin-bottom: 12px;
+      letter-spacing: 0.05em;
+      position: relative;
+      display: inline-block;
+    }
 
-  .city-feature-desc {
-    font-size: 0.8rem;
-    color: var(--white-dim);
-    font-weight: 300;
-  }
+    /* Underline animation on section titles */
+    .section-title::after {
+      content: '';
+      position: absolute;
+      bottom: -4px;
+      left: 50%;
+      width: 0;
+      height: 1px;
+      background: var(--gold);
+      transition: width 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94), left 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
 
-  /* ============ SECTION: QUOTE ============ */
-  .founder-quote {
-    background: var(--void);
-    text-align: center;
-    min-height: 60vh;
-  }
+    .section-title.visible::after {
+      width: 100%;
+      left: 0;
+    }
 
-  .quote-text {
-    font-size: clamp(1rem, 2.5vw, 1.3rem);
-    font-style: italic;
-    color: var(--white);
-    font-weight: 300;
-    line-height: 2.2;
-    max-width: 500px;
-    margin: 0 auto 24px;
-  }
+    .section-title-jp {
+      font-size: clamp(0.85rem, 2vw, 1rem);
+      color: var(--white-dim);
+      margin-bottom: 40px;
+      letter-spacing: 0.15em;
+    }
 
-  .quote-author {
-    font-size: 0.85rem;
-    color: var(--gold-dim);
-    letter-spacing: 0.2em;
-  }
+    .zero-list {
+      display: flex;
+      justify-content: center;
+      gap: 40px;
+      flex-wrap: wrap;
+      margin: 40px 0;
+    }
 
-  /* ============ SECTION: CTA ============ */
-  .cta {
-    background: radial-gradient(ellipse at 50% 80%, var(--indigo) 0%, var(--void) 70%);
-    text-align: center;
-    min-height: 80vh;
-  }
+    .zero-item {
+      text-align: center;
+    }
 
-  .cta-text {
-    font-size: clamp(1.2rem, 3vw, 1.8rem);
-    color: var(--white);
-    font-weight: 300;
-    margin-bottom: 48px;
-    line-height: 2;
-  }
+    .zero-number {
+      font-family: 'Playfair Display', serif;
+      font-size: 3rem;
+      color: var(--gold);
+      font-weight: 700;
+      line-height: 1;
+      transition: text-shadow 0.3s ease;
+    }
 
-  .cta-links {
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-    align-items: center;
-  }
+    /* Pulse glow on zero numbers when visible */
+    .zero-item.visible .zero-number {
+      animation: zeroGlow 2s ease-in-out infinite;
+    }
 
-  .cta-link {
-    display: inline-block;
-    padding: 14px 48px;
-    border: 1px solid var(--gold);
-    color: var(--gold);
-    text-decoration: none;
-    font-size: 0.9rem;
-    letter-spacing: 0.15em;
-    transition: all 0.4s;
-    min-width: 280px;
-  }
+    @keyframes zeroGlow {
 
-  .cta-link:hover {
-    background: var(--gold);
-    color: var(--void);
-  }
+      0%,
+      100% {
+        text-shadow: 0 0 10px rgba(255, 215, 0, 0.2);
+      }
 
-  .cta-link-sub {
-    border-color: var(--gold-dim);
-    color: var(--white-dim);
-    font-size: 0.8rem;
-  }
+      50% {
+        text-shadow: 0 0 30px rgba(255, 215, 0, 0.5), 0 0 60px rgba(255, 215, 0, 0.2);
+      }
+    }
 
-  .cta-link-sub:hover {
-    border-color: var(--gold);
-    color: var(--gold);
-    background: transparent;
-  }
+    .zero-label {
+      font-size: 0.85rem;
+      color: var(--white-dim);
+      margin-top: 4px;
+      letter-spacing: 0.1em;
+    }
 
-  /* ============ FOOTER ============ */
-  footer {
-    position: relative;
-    z-index: 1;
-    text-align: center;
-    padding: 40px;
-    color: var(--white-dim);
-    font-size: 0.75rem;
-    letter-spacing: 0.15em;
-    border-top: 1px solid var(--gold-glow);
-  }
+    .body-text {
+      font-size: clamp(0.95rem, 1.8vw, 1.1rem);
+      color: var(--white);
+      font-weight: 300;
+      line-height: 2;
+      text-align: left;
+    }
 
-  footer a {
-    color: var(--gold-dim);
-    text-decoration: none;
-    margin: 0 12px;
-    transition: color 0.3s;
-  }
+    .body-text-center {
+      text-align: center;
+    }
 
-  footer a:hover { color: var(--gold); }
+    .highlight {
+      color: var(--gold);
+      font-weight: 400;
+    }
 
-  /* ============ SCROLL REVEAL ============ */
-  .reveal {
-    opacity: 0;
-    transform: translateY(30px);
-    transition: opacity 0.8s ease, transform 0.8s ease;
-  }
+    /* ============ SECTION: THE QUESTION ============ */
+    .the-question {
+      background: var(--void);
+      text-align: center;
+      min-height: 80vh;
+    }
 
-  .reveal.visible {
-    opacity: 1;
-    transform: translateY(0);
-  }
+    .big-question {
+      font-size: clamp(1.3rem, 3.5vw, 2rem);
+      color: var(--white);
+      font-weight: 300;
+      line-height: 2.5;
+      margin-bottom: 32px;
+    }
 
-  /* ============ GOLDEN LINE ACCENT ============ */
-  .golden-line {
-    width: 100%;
-    height: 1px;
-    background: linear-gradient(to right, transparent, var(--gold-dim), transparent);
-    margin: 60px 0;
-  }
-</style>
+    .big-question .gold-line {
+      display: block;
+      color: var(--gold);
+      font-size: clamp(1.5rem, 4vw, 2.5rem);
+      font-weight: 700;
+      margin-top: 16px;
+      text-shadow: 0 0 40px rgba(255, 215, 0, 0.2);
+    }
+
+    /* ============ SECTION: 7 LOSSES ============ */
+    .losses {
+      background: linear-gradient(180deg, var(--void) 0%, #0f0a20 50%, var(--void) 100%);
+    }
+
+    .loss-item {
+      padding: 40px 0;
+      border-bottom: 1px solid rgba(255, 215, 0, 0.08);
+      transition: border-color 0.3s ease;
+    }
+
+    .loss-item:hover {
+      border-bottom-color: var(--gold-dim);
+    }
+
+    .loss-item:last-child {
+      border-bottom: none;
+    }
+
+    .loss-number {
+      font-family: 'Playfair Display', serif;
+      font-size: 0.8rem;
+      color: var(--gold-dim);
+      letter-spacing: 0.3em;
+      margin-bottom: 8px;
+      transition: color 0.3s ease;
+    }
+
+    .loss-item:hover .loss-number {
+      color: var(--gold);
+    }
+
+    .loss-title {
+      font-size: clamp(1.1rem, 2.5vw, 1.4rem);
+      color: var(--white);
+      font-weight: 400;
+      margin-bottom: 12px;
+    }
+
+    .loss-desc {
+      font-size: 0.95rem;
+      color: var(--white-dim);
+      font-weight: 300;
+      line-height: 1.9;
+      margin-bottom: 16px;
+    }
+
+    .loss-response {
+      font-size: 0.9rem;
+      color: var(--gold);
+      padding-left: 16px;
+      border-left: 2px solid var(--gold-dim);
+      font-weight: 300;
+      transition: border-color 0.3s ease, padding-left 0.3s ease;
+    }
+
+    .loss-item:hover .loss-response {
+      border-left-color: var(--gold);
+      padding-left: 20px;
+    }
+
+    /* ============ SECTION: THE CITY ============ */
+    .the-city {
+      background: radial-gradient(ellipse at 50% 50%, var(--navy) 0%, var(--void) 70%);
+      text-align: center;
+    }
+
+    .city-features {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 32px;
+      margin: 40px 0;
+    }
+
+    @media (max-width: 500px) {
+      .city-features {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .city-feature {
+      text-align: center;
+      padding: 32px 16px;
+      border: 1px solid var(--gold-glow);
+      border-radius: 4px;
+      background: rgba(13, 13, 59, 0.3);
+      transition: border-color 0.4s, background 0.4s, transform 0.4s, box-shadow 0.4s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Glassmorphism glow on hover */
+    .city-feature::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(circle at 50% 0%, rgba(255, 215, 0, 0.06) 0%, transparent 70%);
+      opacity: 0;
+      transition: opacity 0.4s ease;
+    }
+
+    .city-feature:hover::before {
+      opacity: 1;
+    }
+
+    .city-feature:hover {
+      border-color: var(--gold-dim);
+      background: rgba(13, 13, 59, 0.5);
+      transform: translateY(-4px);
+      box-shadow: 0 8px 32px rgba(255, 215, 0, 0.06);
+    }
+
+    .city-feature-icon {
+      font-size: 1.8rem;
+      margin-bottom: 12px;
+      transition: transform 0.4s ease;
+    }
+
+    .city-feature:hover .city-feature-icon {
+      transform: scale(1.15);
+    }
+
+    .city-feature-name {
+      font-size: 1rem;
+      color: var(--gold);
+      margin-bottom: 4px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .city-feature-desc {
+      font-size: 0.8rem;
+      color: var(--white-dim);
+      font-weight: 300;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* ============ SECTION: QUOTE ============ */
+    .founder-quote {
+      background: var(--void);
+      text-align: center;
+      min-height: 60vh;
+    }
+
+    .quote-text {
+      font-size: clamp(1rem, 2.5vw, 1.3rem);
+      font-style: italic;
+      color: var(--white);
+      font-weight: 300;
+      line-height: 2.2;
+      max-width: 500px;
+      margin: 0 auto 24px;
+    }
+
+    .quote-author {
+      font-size: 0.85rem;
+      color: var(--gold-dim);
+      letter-spacing: 0.2em;
+    }
+
+    /* ============ SECTION: CTA ============ */
+    .cta {
+      background: radial-gradient(ellipse at 50% 80%, var(--indigo) 0%, var(--void) 70%);
+      text-align: center;
+      min-height: 80vh;
+    }
+
+    .cta-text {
+      font-size: clamp(1.2rem, 3vw, 1.8rem);
+      color: var(--white);
+      font-weight: 300;
+      margin-bottom: 48px;
+      line-height: 2;
+    }
+
+    .cta-links {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      align-items: center;
+    }
+
+    .cta-link {
+      display: inline-block;
+      padding: 14px 48px;
+      border: 1px solid var(--gold);
+      color: var(--gold);
+      text-decoration: none;
+      font-size: 0.9rem;
+      letter-spacing: 0.15em;
+      transition: all 0.4s;
+      min-width: 280px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Ripple glow effect on CTA hover */
+    .cta-link::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 0;
+      height: 0;
+      background: radial-gradient(circle, rgba(255, 215, 0, 0.15) 0%, transparent 70%);
+      border-radius: 50%;
+      transform: translate(-50%, -50%);
+      transition: width 0.6s ease, height 0.6s ease;
+    }
+
+    .cta-link:hover::before {
+      width: 400px;
+      height: 400px;
+    }
+
+    .cta-link:hover {
+      background: var(--gold);
+      color: var(--void);
+      box-shadow: 0 0 40px rgba(255, 215, 0, 0.2);
+    }
+
+    .cta-link-sub {
+      border-color: var(--gold-dim);
+      color: var(--white-dim);
+      font-size: 0.8rem;
+    }
+
+    .cta-link-sub:hover {
+      border-color: var(--gold);
+      color: var(--gold);
+      background: transparent;
+      box-shadow: none;
+    }
+
+    .cta-link-sub::before {
+      display: none;
+    }
+
+    /* ============ FOOTER ============ */
+    footer {
+      position: relative;
+      z-index: 1;
+      text-align: center;
+      padding: 40px;
+      color: var(--white-dim);
+      font-size: 0.75rem;
+      letter-spacing: 0.15em;
+      border-top: 1px solid var(--gold-glow);
+    }
+
+    footer a {
+      color: var(--gold-dim);
+      text-decoration: none;
+      margin: 0 12px;
+      transition: color 0.3s;
+    }
+
+    footer a:hover {
+      color: var(--gold);
+    }
+
+    /* ============ SCROLL REVEAL (staggered) ============ */
+    .reveal {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.8s ease, transform 0.8s ease;
+      transition-delay: var(--stagger, 0s);
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ============ GOLDEN LINE ACCENT ============ */
+    .golden-line {
+      width: 100%;
+      height: 1px;
+      background: linear-gradient(to right, transparent, var(--gold-dim), transparent);
+      margin: 60px 0;
+    }
+
+    /* ============ BREATHING BACKGROUND ============ */
+    @keyframes breathe {
+
+      0%,
+      100% {
+        opacity: 0.3;
+      }
+
+      50% {
+        opacity: 0.6;
+      }
+    }
+
+    .section-glow {
+      position: absolute;
+      width: 600px;
+      height: 600px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(255, 215, 0, 0.03) 0%, transparent 70%);
+      animation: breathe 8s ease-in-out infinite;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* ============ SMOOTH PAGE LOAD ============ */
+    .page-loader {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: var(--void);
+      z-index: 10000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: opacity 0.8s ease;
+    }
+
+    .page-loader.loaded {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    /* ============ REDUCED MOTION ============ */
+    @media (prefers-reduced-motion: reduce) {
+
+      *,
+      *::before,
+      *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
+
+      .cursor-dot,
+      .cursor-ring {
+        display: none;
+      }
+
+      body {
+        cursor: auto;
+      }
+
+      .particle {
+        display: none;
+      }
+    }
+
+    /* ============ MOBILE: disable custom cursor ============ */
+    @media (max-width: 768px) {
+
+      .cursor-dot,
+      .cursor-ring {
+        display: none;
+      }
+
+      body {
+        cursor: auto;
+      }
+    }
+
+    @media (hover: none) {
+
+      .cursor-dot,
+      .cursor-ring {
+        display: none;
+      }
+
+      body {
+        cursor: auto;
+      }
+    }
+  </style>
 </head>
+
 <body>
 
-<!-- STAR FIELD -->
-<div class="starfield" id="starfield"></div>
+  <!-- PAGE LOADER -->
+  <div class="page-loader" id="pageLoader"></div>
 
-<!-- ====== HERO ====== -->
-<section class="hero">
-  <div class="content-wrapper">
-    <h1 class="hero-logo">ORBITA</h1>
-    <p class="hero-sub">The City of Resonance</p>
-    <div class="divider"></div>
-    <p class="hero-tagline">
-      広告ゼロ。競争ゼロ。いいねゼロ。<br>
-      <span class="gold">尊厳だけが通貨になる</span>デジタル文明。
+  <!-- CUSTOM CURSOR -->
+  <div class="cursor-dot" id="cursorDot"></div>
+  <div class="cursor-ring" id="cursorRing"></div>
+
+  <!-- STAR FIELD -->
+  <div class="starfield" id="starfield"></div>
+
+  <!-- PARTICLES -->
+  <div id="particles"></div>
+
+  <!-- ====== HERO ====== -->
+  <section class="hero">
+    <div class="section-glow" style="top: 20%; left: 30%;"></div>
+    <div class="content-wrapper">
+      <h1 class="hero-logo" id="heroLogo" aria-label="ORBITA"></h1>
+      <p class="hero-sub">The City of Resonance</p>
+      <div class="divider"></div>
+      <p class="hero-tagline">
+        <span class="line">広告ゼロ。競争ゼロ。いいねゼロ。</span>
+        <span class="line"><span class="gold">尊厳だけが通貨になる</span>デジタル文明。</span>
+      </p>
+    </div>
+    <div class="scroll-hint">SCROLL</div>
+  </section>
+
+  <!-- ====== WHAT IS ORBITA ====== -->
+  <section class="what-is">
+    <div class="content-wrapper" style="text-align: center;">
+      <h2 class="section-title reveal">What Is ORBITA?</h2>
+      <p class="section-title-jp reveal">ORBITAとは何か</p>
+
+      <div class="zero-list reveal">
+        <div class="zero-item">
+          <div class="zero-number">0</div>
+          <div class="zero-label">広告</div>
+        </div>
+        <div class="zero-item">
+          <div class="zero-number">0</div>
+          <div class="zero-label">ランキング</div>
+        </div>
+        <div class="zero-item">
+          <div class="zero-number">0</div>
+          <div class="zero-label">いいね</div>
+        </div>
+        <div class="zero-item">
+          <div class="zero-number">0</div>
+          <div class="zero-label">フォロワー数</div>
+        </div>
+      </div>
+
+      <p class="body-text body-text-center reveal">
+        ORBITAは、<span class="highlight">人間の尊厳</span>だけを通貨とするデジタル文明です。<br><br>
+        AIを最大限に活用する。<br>
+        でも、人間にしか持てないものには触れさせない。<br><br>
+        ここでは誰も数字で測られない。<br>
+        あなたの存在そのものが、この都市の一部になる。
+      </p>
+    </div>
+  </section>
+
+  <!-- ====== THE QUESTION ====== -->
+  <section class="the-question">
+    <div class="section-glow" style="top: 40%; right: 10%;"></div>
+    <div class="content-wrapper">
+      <p class="big-question reveal">
+        AGIがすべてを超えたとき、<br>
+        残る問いはひとつだけ。
+        <span class="gold-line">「人間とは何か？」</span>
+      </p>
+      <div class="divider reveal"></div>
+      <p class="body-text body-text-center reveal">
+        知性？ AIの方が上。<br>
+        創造性？ AIの方が上。<br>
+        共感？ AIの方が精度が高い。<br><br>
+        一つひとつ剥がされていく。<br>
+        玉ねぎの皮のように。<br><br>
+        <span class="highlight">何も残らなくても、ここにいていい。</span><br>
+        それがORBITAの答え。
+      </p>
+    </div>
+  </section>
+
+  <!-- ====== 7 LOSSES ====== -->
+  <section class="losses">
+    <div class="content-wrapper">
+      <h2 class="section-title reveal" style="display: block; text-align: center;">Seven Losses, Seven Answers</h2>
+      <p class="section-title-jp reveal" style="text-align: center;">7つの喪失と、7つの設計</p>
+
+      <div class="loss-item reveal">
+        <div class="loss-number">01</div>
+        <div class="loss-title">「必要とされる感覚」が消える</div>
+        <div class="loss-desc">AGIがすべてをこなせるとき、「自分がいなくても世界は回る」という感覚が全人類に同時にインストールされる。</div>
+        <div class="loss-response">→ ORBITAでは、あなたがいるだけで星が一つ増える。</div>
+      </div>
+
+      <div class="loss-item reveal">
+        <div class="loss-number">02</div>
+        <div class="loss-title">「下手でもやる勇気」が笑われる</div>
+        <div class="loss-desc">挑戦すること自体が非効率と見なされる世界。「なぜAIに任せないのか」と。</div>
+        <div class="loss-response">→ 星闇市では値札の代わりに物語が添えてある。</div>
+      </div>
+
+      <div class="loss-item reveal">
+        <div class="loss-number">03</div>
+        <div class="loss-title">「この人の言葉」への信頼が溶ける</div>
+        <div class="loss-desc">その「大丈夫だよ」は本当にその人の言葉か? AIの台本ではないのか？</div>
+        <div class="loss-response">→ 共鳴のシステムに言葉はない。星が微かに震えるだけ。</div>
+      </div>
+
+      <div class="loss-item reveal">
+        <div class="loss-number">04</div>
+        <div class="loss-title">「沈黙」が絶滅する</div>
+        <div class="loss-desc">何もしていないあなたは、最適化されていないあなた。空白はエラー。</div>
+        <div class="loss-response">→ ORBITAの中心は絶対静寂。水鏡湖には声すらない。</div>
+      </div>
+
+      <div class="loss-item reveal">
+        <div class="loss-number">05</div>
+        <div class="loss-title">「わからない」の喜びが消える</div>
+        <div class="loss-desc">問いを発した瞬間に答えが返る。暗闇の中を手探りで進む喜びが失われる。</div>
+        <div class="loss-response">→ ORBITAにレコメンドはない。偶然の出会いを設計で守る。</div>
+      </div>
+
+      <div class="loss-item reveal">
+        <div class="loss-number">06</div>
+        <div class="loss-title">「記憶」が自分のものでなくなる</div>
+        <div class="loss-desc">歪んだ記憶こそがアイデンティティだった。でもAIはそれを「修正」する。</div>
+        <div class="loss-response">→ ORBITAでは、あなたの行動を誰も記録しない。</div>
+      </div>
+
+      <div class="loss-item reveal">
+        <div class="loss-number">07</div>
+        <div class="loss-title">「人間の定義」が消える</div>
+        <div class="loss-desc">すべてにおいてAIが人間を超えたとき。最後に残るものは何か。</div>
+        <div class="loss-response">→ 何も残らなくても、ここにいていい。それが尊厳。</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ====== THE CITY ====== -->
+  <section class="the-city">
+    <div class="content-wrapper">
+      <h2 class="section-title reveal" style="display: block; text-align: center;">The City</h2>
+      <p class="section-title-jp reveal" style="text-align: center;">5層同心円の都市構造</p>
+
+      <div class="city-features reveal">
+        <div class="city-feature">
+          <div class="city-feature-icon">🏮</div>
+          <div class="city-feature-name">星闇市</div>
+          <div class="city-feature-desc">Star Night Market<br>値札なし。物語で贈る</div>
+        </div>
+        <div class="city-feature">
+          <div class="city-feature-icon">🌲</div>
+          <div class="city-feature-name">深森聖域</div>
+          <div class="city-feature-desc">Deep Forest Sanctuary<br>木が来訪者に傾く</div>
+        </div>
+        <div class="city-feature">
+          <div class="city-feature-icon">🪞</div>
+          <div class="city-feature-name">水鏡湖</div>
+          <div class="city-feature-desc">Mirror Lake<br>絶対静寂の中心</div>
+        </div>
+        <div class="city-feature">
+          <div class="city-feature-icon">🍵</div>
+          <div class="city-feature-name">星静庵</div>
+          <div class="city-feature-desc">Star Silence Tea Room<br>一人の時間を守る</div>
+        </div>
+      </div>
+
+      <p class="body-text body-text-center reveal">
+        中心に近づくほど、静かになる。<br>
+        <span class="highlight">16の公式文書。24の施設。11の住人。</span><br>
+        設計者：1人。
+      </p>
+    </div>
+  </section>
+
+  <!-- ====== FOUNDER QUOTE ====== -->
+  <section class="founder-quote">
+    <div class="section-glow" style="top: 30%; left: 50%; transform: translateX(-50%);"></div>
+    <div class="content-wrapper reveal">
+      <div class="divider"></div>
+      <p class="quote-text">
+        「これ以上人間らしさを失うのは、<br>少し味気ない。<br><br>
+        だからこそ、今ここに<br>存在をしていい場所をつくりたい。」
+      </p>
+      <p class="quote-author">— KAHUA かふあ / ORBITA 設計者</p>
+      <div class="divider"></div>
+    </div>
+  </section>
+
+  <!-- ====== CTA ====== -->
+  <section class="cta">
+    <div class="content-wrapper">
+      <h2 class="section-title reveal" style="display: block; text-align: center;">Enter ORBITA</h2>
+      <p class="section-title-jp reveal" style="text-align: center;">門は開いている</p>
+
+      <p class="cta-text reveal">
+        周波数が合う人だけが、<br>この街を見つけます。
+      </p>
+
+      <div class="cta-links reveal">
+        <a href="https://www.threads.com/@kahua_is" class="cta-link" target="_blank">Threads → @kahua_is</a>
+        <a href="https://www.instagram.com/kahua_is/" class="cta-link cta-link-sub" target="_blank">Instagram →
+          @kahua_is</a>
+        <a href="https://www.tiktok.com/@kahua_is" class="cta-link cta-link-sub" target="_blank">TikTok → @kahua_is</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ====== FOOTER ====== -->
+  <footer>
+    <p>ORBITA — The City of Resonance</p>
+    <p style="margin-top: 8px;">
+      <a href="https://www.threads.com/@kahua_is">Threads</a>
+      <a href="https://www.instagram.com/kahua_is/">Instagram</a>
+      <a href="https://www.tiktok.com/@kahua_is">TikTok</a>
     </p>
-  </div>
-  <div class="scroll-hint">SCROLL</div>
-</section>
+    <p style="margin-top: 16px; color: var(--gold-dim);">Designed by KAHUA — 深夜の設計者</p>
+  </footer>
 
-<!-- ====== WHAT IS ORBITA ====== -->
-<section class="what-is">
-  <div class="content-wrapper">
-    <h2 class="section-title reveal">What Is ORBITA?</h2>
-    <p class="section-title-jp reveal">ORBITAとは何か</p>
-    
-    <div class="zero-list reveal">
-      <div class="zero-item">
-        <div class="zero-number">0</div>
-        <div class="zero-label">広告</div>
-      </div>
-      <div class="zero-item">
-        <div class="zero-number">0</div>
-        <div class="zero-label">ランキング</div>
-      </div>
-      <div class="zero-item">
-        <div class="zero-number">0</div>
-        <div class="zero-label">いいね</div>
-      </div>
-      <div class="zero-item">
-        <div class="zero-number">0</div>
-        <div class="zero-label">フォロワー数</div>
-      </div>
-    </div>
+  <script>
+    // ============ PAGE LOADER ============
+    window.addEventListener('load', () => {
+      setTimeout(() => {
+        document.getElementById('pageLoader').classList.add('loaded');
+      }, 400);
+    });
 
-    <p class="body-text body-text-center reveal">
-      ORBITAは、<span class="highlight">人間の尊厳</span>だけを通貨とするデジタル文明です。<br><br>
-      AIを最大限に活用する。<br>
-      でも、人間にしか持てないものには触れさせない。<br><br>
-      ここでは誰も数字で測られない。<br>
-      あなたの存在そのものが、この都市の一部になる。
-    </p>
-  </div>
-</section>
+    // ============ CUSTOM CURSOR ============
+    const cursorDot = document.getElementById('cursorDot');
+    const cursorRing = document.getElementById('cursorRing');
+    let mouseX = 0, mouseY = 0;
+    let ringX = 0, ringY = 0;
 
-<!-- ====== THE QUESTION ====== -->
-<section class="the-question">
-  <div class="content-wrapper">
-    <p class="big-question reveal">
-      AGIがすべてを超えたとき、<br>
-      残る問いはひとつだけ。
-      <span class="gold-line">「人間とは何か？」</span>
-    </p>
-    <div class="divider"></div>
-    <p class="body-text body-text-center reveal">
-      知性？ AIの方が上。<br>
-      創造性？ AIの方が上。<br>
-      共感？ AIの方が精度が高い。<br><br>
-      一つひとつ剥がされていく。<br>
-      玉ねぎの皮のように。<br><br>
-      <span class="highlight">何も残らなくても、ここにいていい。</span><br>
-      それがORBITAの答え。
-    </p>
-  </div>
-</section>
+    document.addEventListener('mousemove', (e) => {
+      mouseX = e.clientX;
+      mouseY = e.clientY;
+      cursorDot.style.left = mouseX - 4 + 'px';
+      cursorDot.style.top = mouseY - 4 + 'px';
+    });
 
-<!-- ====== 7 LOSSES ====== -->
-<section class="losses">
-  <div class="content-wrapper">
-    <h2 class="section-title reveal">Seven Losses, Seven Answers</h2>
-    <p class="section-title-jp reveal">7つの喪失と、7つの設計</p>
-
-    <div class="loss-item reveal">
-      <div class="loss-number">01</div>
-      <div class="loss-title">「必要とされる感覚」が消える</div>
-      <div class="loss-desc">AGIがすべてをこなせるとき、「自分がいなくても世界は回る」という感覚が全人類に同時にインストールされる。</div>
-      <div class="loss-response">→ ORBITAでは、あなたがいるだけで星が一つ増える。</div>
-    </div>
-
-    <div class="loss-item reveal">
-      <div class="loss-number">02</div>
-      <div class="loss-title">「下手でもやる勇気」が笑われる</div>
-      <div class="loss-desc">挑戦すること自体が非効率と見なされる世界。「なぜAIに任せないのか」と。</div>
-      <div class="loss-response">→ 星闇市では値札の代わりに物語が添えてある。</div>
-    </div>
-
-    <div class="loss-item reveal">
-      <div class="loss-number">03</div>
-      <div class="loss-title">「この人の言葉」への信頼が溶ける</div>
-      <div class="loss-desc">その「大丈夫だよ」は本当にその人の言葉か? AIの台本ではないのか？</div>
-      <div class="loss-response">→ 共鳴のシステムに言葉はない。星が微かに震えるだけ。</div>
-    </div>
-
-    <div class="loss-item reveal">
-      <div class="loss-number">04</div>
-      <div class="loss-title">「沈黙」が絶滅する</div>
-      <div class="loss-desc">何もしていないあなたは、最適化されていないあなた。空白はエラー。</div>
-      <div class="loss-response">→ ORBITAの中心は絶対静寂。水鏡湖には声すらない。</div>
-    </div>
-
-    <div class="loss-item reveal">
-      <div class="loss-number">05</div>
-      <div class="loss-title">「わからない」の喜びが消える</div>
-      <div class="loss-desc">問いを発した瞬間に答えが返る。暗闇の中を手探りで進む喜びが失われる。</div>
-      <div class="loss-response">→ ORBITAにレコメンドはない。偶然の出会いを設計で守る。</div>
-    </div>
-
-    <div class="loss-item reveal">
-      <div class="loss-number">06</div>
-      <div class="loss-title">「記憶」が自分のものでなくなる</div>
-      <div class="loss-desc">歪んだ記憶こそがアイデンティティだった。でもAIはそれを「修正」する。</div>
-      <div class="loss-response">→ ORBITAでは、あなたの行動を誰も記録しない。</div>
-    </div>
-
-    <div class="loss-item reveal">
-      <div class="loss-number">07</div>
-      <div class="loss-title">「人間の定義」が消える</div>
-      <div class="loss-desc">すべてにおいてAIが人間を超えたとき。最後に残るものは何か。</div>
-      <div class="loss-response">→ 何も残らなくても、ここにいていい。それが尊厳。</div>
-    </div>
-  </div>
-</section>
-
-<!-- ====== THE CITY ====== -->
-<section class="the-city">
-  <div class="content-wrapper">
-    <h2 class="section-title reveal">The City</h2>
-    <p class="section-title-jp reveal">5層同心円の都市構造</p>
-
-    <div class="city-features reveal">
-      <div class="city-feature">
-        <div class="city-feature-icon">🏮</div>
-        <div class="city-feature-name">星闇市</div>
-        <div class="city-feature-desc">Star Night Market<br>値札なし。物語で贈る</div>
-      </div>
-      <div class="city-feature">
-        <div class="city-feature-icon">🌲</div>
-        <div class="city-feature-name">深森聖域</div>
-        <div class="city-feature-desc">Deep Forest Sanctuary<br>木が来訪者に傾く</div>
-      </div>
-      <div class="city-feature">
-        <div class="city-feature-icon">🪞</div>
-        <div class="city-feature-name">水鏡湖</div>
-        <div class="city-feature-desc">Mirror Lake<br>絶対静寂の中心</div>
-      </div>
-      <div class="city-feature">
-        <div class="city-feature-icon">🍵</div>
-        <div class="city-feature-name">星静庵</div>
-        <div class="city-feature-desc">Star Silence Tea Room<br>一人の時間を守る</div>
-      </div>
-    </div>
-
-    <p class="body-text body-text-center reveal">
-      中心に近づくほど、静かになる。<br>
-      <span class="highlight">16の公式文書。24の施設。11の住人。</span><br>
-      設計者：1人。
-    </p>
-  </div>
-</section>
-
-<!-- ====== FOUNDER QUOTE ====== -->
-<section class="founder-quote">
-  <div class="content-wrapper reveal">
-    <div class="divider"></div>
-    <p class="quote-text">
-      「これ以上人間らしさを失うのは、<br>少し味気ない。<br><br>
-      だからこそ、今ここに<br>存在をしていい場所をつくりたい。」
-    </p>
-    <p class="quote-author">— KAHUA かふあ / ORBITA 設計者</p>
-    <div class="divider"></div>
-  </div>
-</section>
-
-<!-- ====== CTA ====== -->
-<section class="cta">
-  <div class="content-wrapper">
-    <h2 class="section-title reveal">Enter ORBITA</h2>
-    <p class="section-title-jp reveal">門は開いている</p>
-    
-    <p class="cta-text reveal">
-      周波数が合う人だけが、<br>この街を見つけます。
-    </p>
-
-    <div class="cta-links reveal">
-      <a href="https://www.threads.com/@kahua_is" class="cta-link" target="_blank">Threads → @kahua_is</a>
-      <a href="https://www.instagram.com/kahua_is/" class="cta-link cta-link-sub" target="_blank">Instagram → @kahua_is</a>
-      <a href="https://www.tiktok.com/@kahua_is" class="cta-link cta-link-sub" target="_blank">TikTok → @kahua_is</a>
-    </div>
-  </div>
-</section>
-
-<!-- ====== FOOTER ====== -->
-<footer>
-  <p>ORBITA — The City of Resonance</p>
-  <p style="margin-top: 8px;">
-    <a href="https://www.threads.com/@kahua_is">Threads</a>
-    <a href="https://www.instagram.com/kahua_is/">Instagram</a>
-    <a href="https://www.tiktok.com/@kahua_is">TikTok</a>
-  </p>
-  <p style="margin-top: 16px; color: var(--gold-dim);">Designed by KAHUA — 深夜の設計者</p>
-</footer>
-
-<script>
-// ============ STAR FIELD GENERATOR ============
-function createStarfield() {
-  const container = document.getElementById('starfield');
-  const count = 200;
-  
-  for (let i = 0; i < count; i++) {
-    const star = document.createElement('div');
-    star.className = 'star';
-    const size = Math.random() * 2 + 0.5;
-    star.style.width = size + 'px';
-    star.style.height = size + 'px';
-    star.style.left = Math.random() * 100 + '%';
-    star.style.top = Math.random() * 100 + '%';
-    star.style.setProperty('--duration', (Math.random() * 4 + 2) + 's');
-    star.style.setProperty('--min-opacity', '0.1');
-    star.style.setProperty('--max-opacity', (Math.random() * 0.6 + 0.3).toString());
-    star.style.animationDelay = Math.random() * 4 + 's';
-    
-    // Some stars are gold
-    if (Math.random() > 0.85) {
-      star.style.background = '#FFD700';
+    function animateRing() {
+      ringX += (mouseX - ringX) * 0.12;
+      ringY += (mouseY - ringY) * 0.12;
+      cursorRing.style.left = ringX + 'px';
+      cursorRing.style.top = ringY + 'px';
+      requestAnimationFrame(animateRing);
     }
-    
-    container.appendChild(star);
-  }
-}
+    animateRing();
 
-// ============ SCROLL REVEAL ============
-function setupReveal() {
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('visible');
+    // Hover effect on interactive elements
+    document.querySelectorAll('a, .city-feature, .cta-link').forEach(el => {
+      el.addEventListener('mouseenter', () => cursorRing.classList.add('hover'));
+      el.addEventListener('mouseleave', () => cursorRing.classList.remove('hover'));
+    });
+
+    // ============ HERO LOGO LETTER ANIMATION ============
+    const logoText = 'ORBITA';
+    const logoEl = document.getElementById('heroLogo');
+    logoText.split('').forEach((char, i) => {
+      const span = document.createElement('span');
+      span.className = 'letter';
+      span.textContent = char;
+      span.style.setProperty('--delay', (0.3 + i * 0.12) + 's');
+      logoEl.appendChild(span);
+    });
+
+    // ============ STAR FIELD GENERATOR ============
+    function createStarfield() {
+      const container = document.getElementById('starfield');
+      const isMobile = window.innerWidth < 768;
+      const count = isMobile ? 100 : 200;
+
+      for (let i = 0; i < count; i++) {
+        const star = document.createElement('div');
+        star.className = 'star';
+        const size = Math.random() * 2 + 0.5;
+        star.style.width = size + 'px';
+        star.style.height = size + 'px';
+        star.style.left = Math.random() * 100 + '%';
+        star.style.top = Math.random() * 100 + '%';
+        star.style.setProperty('--duration', (Math.random() * 4 + 2) + 's');
+        star.style.setProperty('--min-opacity', '0.1');
+        star.style.setProperty('--max-opacity', (Math.random() * 0.6 + 0.3).toString());
+        star.style.animationDelay = Math.random() * 4 + 's';
+
+        if (Math.random() > 0.85) {
+          star.style.background = '#FFD700';
+        }
+
+        container.appendChild(star);
+      }
+    }
+
+    // ============ FLOATING GOLD PARTICLES ============
+    function createParticles() {
+      const container = document.getElementById('particles');
+      const isMobile = window.innerWidth < 768;
+      const count = isMobile ? 8 : 20;
+
+      for (let i = 0; i < count; i++) {
+        const particle = document.createElement('div');
+        particle.className = 'particle';
+        particle.style.left = Math.random() * 100 + '%';
+        particle.style.bottom = '-10px';
+        particle.style.setProperty('--float-duration', (Math.random() * 12 + 10) + 's');
+        particle.style.setProperty('--float-delay', (Math.random() * 10) + 's');
+        particle.style.setProperty('--drift', (Math.random() * 60 - 30) + 'px');
+
+        const size = Math.random() * 2 + 1;
+        particle.style.width = size + 'px';
+        particle.style.height = size + 'px';
+
+        container.appendChild(particle);
+      }
+    }
+
+    // ============ PARALLAX STARFIELD ============
+    let ticking = false;
+    window.addEventListener('scroll', () => {
+      if (!ticking) {
+        requestAnimationFrame(() => {
+          const scrollY = window.scrollY;
+          const starfield = document.getElementById('starfield');
+          starfield.style.transform = `translateY(${scrollY * 0.15}px)`;
+
+          const particles = document.getElementById('particles');
+          particles.style.transform = `translateY(${scrollY * 0.08}px)`;
+
+          ticking = false;
+        });
+        ticking = true;
       }
     });
-  }, { threshold: 0.15 });
 
-  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
-}
+    // ============ SCROLL REVEAL WITH STAGGER ============
+    function setupReveal() {
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            // Find stagger index among siblings
+            const parent = entry.target.parentElement;
+            const siblings = parent.querySelectorAll('.reveal');
+            let index = 0;
+            siblings.forEach((sib, i) => {
+              if (sib === entry.target) index = i;
+            });
 
-// ============ INIT ============
-createStarfield();
-setupReveal();
-</script>
+            entry.target.style.setProperty('--stagger', (index * 0.12) + 's');
+            entry.target.classList.add('visible');
+          }
+        });
+      }, { threshold: 0.12 });
+
+      document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+    }
+
+    // ============ ZERO NUMBER GLOW ON SCROLL ============
+    function setupZeroGlow() {
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+          }
+        });
+      }, { threshold: 0.5 });
+
+      document.querySelectorAll('.zero-item').forEach(el => observer.observe(el));
+    }
+
+    // ============ INIT ============
+    createStarfield();
+    createParticles();
+    setupReveal();
+    setupZeroGlow();
+  </script>
 
 </body>
+
 </html>
