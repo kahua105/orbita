@@ -92,7 +92,75 @@
       position: absolute;
       border-radius: 50%;
       background: var(--white);
-      animation: twinkle var(--duration) ease-in-out infinite;
+      animation: twinkle var(--duration) ease-in-out infinite,
+        starDrift var(--drift-duration, 60s) linear infinite;
+    }
+
+    @keyframes starDrift {
+      0% {
+        transform: translate(0, 0);
+      }
+
+      25% {
+        transform: translate(var(--dx1, 15px), var(--dy1, 25px));
+      }
+
+      50% {
+        transform: translate(var(--dx2, -10px), var(--dy2, 50px));
+      }
+
+      75% {
+        transform: translate(var(--dx3, 20px), var(--dy3, 25px));
+      }
+
+      100% {
+        transform: translate(0, 0);
+      }
+    }
+
+    /* ============ SHOOTING STARS ============ */
+    .shooting-star {
+      position: fixed;
+      width: 2px;
+      height: 2px;
+      background: var(--white);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0;
+      box-shadow: 0 0 4px 1px rgba(255, 255, 255, 0.4);
+    }
+
+    .shooting-star::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 80px;
+      height: 1px;
+      background: linear-gradient(to left, rgba(255, 255, 255, 0.6), transparent);
+      transform-origin: right center;
+      transform: rotate(var(--angle, -45deg));
+    }
+
+    .shooting-star.active {
+      animation: shoot var(--shoot-duration, 1.2s) ease-out forwards;
+    }
+
+    @keyframes shoot {
+      0% {
+        opacity: 1;
+        transform: translate(0, 0);
+      }
+
+      70% {
+        opacity: 0.6;
+      }
+
+      100% {
+        opacity: 0;
+        transform: translate(var(--shoot-x, -300px), var(--shoot-y, 300px));
+      }
     }
 
     @keyframes twinkle {
@@ -1116,12 +1184,66 @@
         star.style.setProperty('--max-opacity', (Math.random() * 0.6 + 0.3).toString());
         star.style.animationDelay = Math.random() * 4 + 's';
 
+        // Drift: each star moves in its own random path
+        const driftRange = 30 + Math.random() * 40;
+        star.style.setProperty('--drift-duration', (40 + Math.random() * 60) + 's');
+        star.style.setProperty('--dx1', (Math.random() * driftRange - driftRange / 2) + 'px');
+        star.style.setProperty('--dy1', (Math.random() * driftRange - driftRange / 2) + 'px');
+        star.style.setProperty('--dx2', (Math.random() * driftRange - driftRange / 2) + 'px');
+        star.style.setProperty('--dy2', (Math.random() * driftRange - driftRange / 2) + 'px');
+        star.style.setProperty('--dx3', (Math.random() * driftRange - driftRange / 2) + 'px');
+        star.style.setProperty('--dy3', (Math.random() * driftRange - driftRange / 2) + 'px');
+
         if (Math.random() > 0.85) {
           star.style.background = '#FFD700';
         }
 
         container.appendChild(star);
       }
+    }
+
+    // ============ SHOOTING STARS ============
+    function spawnShootingStar() {
+      const star = document.createElement('div');
+      star.className = 'shooting-star';
+
+      // Start from random position in top-right area
+      star.style.left = (40 + Math.random() * 50) + '%';
+      star.style.top = (5 + Math.random() * 30) + '%';
+
+      // Direction: generally toward bottom-left
+      const shootX = -(200 + Math.random() * 300);
+      const shootY = 150 + Math.random() * 200;
+      star.style.setProperty('--shoot-x', shootX + 'px');
+      star.style.setProperty('--shoot-y', shootY + 'px');
+      star.style.setProperty('--shoot-duration', (0.8 + Math.random() * 0.6) + 's');
+      star.style.setProperty('--angle', Math.atan2(shootY, shootX) * (180 / Math.PI) + 'deg');
+
+      document.body.appendChild(star);
+
+      // Trigger animation
+      requestAnimationFrame(() => {
+        star.classList.add('active');
+      });
+
+      // Cleanup
+      setTimeout(() => star.remove(), 2000);
+    }
+
+    // Spawn shooting stars randomly every 4-10 seconds
+    function startShootingStars() {
+      function scheduleNext() {
+        const delay = 4000 + Math.random() * 6000;
+        setTimeout(() => {
+          spawnShootingStar();
+          scheduleNext();
+        }, delay);
+      }
+      // First one after 3 seconds
+      setTimeout(() => {
+        spawnShootingStar();
+        scheduleNext();
+      }, 3000);
     }
 
     // ============ FLOATING GOLD PARTICLES ============
@@ -1203,6 +1325,7 @@
     // ============ INIT ============
     createStarfield();
     createParticles();
+    startShootingStars();
     setupReveal();
     setupZeroGlow();
   </script>
