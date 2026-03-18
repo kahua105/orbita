@@ -1,41 +1,33 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ja">
 
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ORBITA — The City of Resonance</title>
-  <meta name="description"
-    content="Zero ads. Zero competition. Zero likes. A digital civilization where the only currency is dignity.">
+  <title>ORBITA — The Bright Dimension</title>
+  <meta name="description" content="A sanctuary of euphoria and optimism.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link
-    href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Noto+Serif+JP:wght@300;400;700&family=Inter:wght@300;400&display=swap"
-    rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Noto+Serif+JP:wght@300;400;700&family=Inter:wght@300;400&display=swap" rel="stylesheet">
+  
   <style>
     /* ============ RESET & BASE ============ */
-    *,
-    *::before,
-    *::after {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
     :root {
-      --void: #0a0a1a;
-      --indigo: #0d0d3b;
-      --navy: #191970;
+      --void: #0a0a14;
+      --indigo: #15132a;
+      --dawn: #3d1b2b;
+      --dawn-gold: #ffb84d;
       --gold: #FFD700;
       --gold-dim: rgba(255, 215, 0, 0.3);
-      --gold-glow: rgba(255, 215, 0, 0.08);
-      --white: #f0ede6;
-      --white-dim: rgba(240, 237, 230, 0.6);
-      --nebula: #2a0845;
+      --white: #fdfcf9;
+      --white-dim: rgba(253, 252, 249, 0.7);
     }
-
-    html {
-      scroll-behavior: smooth;
-    }
+    
+    html.lenis, html.lenis body { height: auto; }
+    .lenis.lenis-smooth { scroll-behavior: auto !important; }
+    .lenis.lenis-smooth [data-lenis-prevent] { overscroll-behavior: contain; }
+    .lenis.lenis-stopped { overflow: hidden; }
+    .lenis.lenis-scrolling iframe { pointer-events: none; }
 
     body {
       background: var(--void);
@@ -46,1380 +38,417 @@
       cursor: none;
     }
 
+    /* ============ BACKGROUND EXTRAS (DAWN EFFECT) ============ */
+    .bg-gradient {
+      position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none;
+    }
+    #step1 .bg-gradient { background: radial-gradient(ellipse at 50% 120%, var(--dawn) 0%, var(--void) 80%); }
+    #step2 .bg-gradient { background: var(--void); }
+    #step3 .bg-gradient { background: linear-gradient(180deg, var(--void) 0%, var(--indigo) 50%, var(--void) 100%); }
+    #step4 .bg-gradient { background: radial-gradient(ellipse at 50% 120%, var(--dawn) 0%, var(--void) 80%); }
+    #step5 .bg-gradient { background: var(--void); }
+
     /* ============ LANGUAGE TOGGLE ============ */
-    .lang-toggle {
-      position: fixed;
-      top: 24px;
-      right: 24px;
-      z-index: 100;
-      display: flex;
-      gap: 0;
-      border: 1px solid var(--gold-dim);
-      border-radius: 4px;
-      overflow: hidden;
-      backdrop-filter: blur(12px);
-      background: rgba(10, 10, 26, 0.6);
-    }
-
-    .lang-btn {
-      padding: 8px 16px;
-      background: transparent;
-      border: none;
-      color: var(--white-dim);
-      font-family: 'Inter', sans-serif;
-      font-size: 0.75rem;
-      letter-spacing: 0.15em;
-      cursor: none;
-      transition: all 0.3s ease;
-    }
-
-    .lang-btn.active {
-      background: var(--gold);
-      color: var(--void);
-      font-weight: 400;
-    }
-
-    .lang-btn:not(.active):hover {
-      color: var(--gold);
-    }
-
-    /* Language show/hide using high-specificity overrides */
-    html[lang="en"] [data-lang-ja] {
-      display: none !important;
-    }
-
-    html[lang="ja"] [data-lang-en] {
-      display: none !important;
-    }
-
-    html[lang="en"] body {
-      font-family: 'Playfair Display', 'Inter', serif;
-    }
+    .lang-toggle { position: fixed; top: 24px; right: 24px; z-index: 100; display: flex; border: 1px solid var(--gold-dim); border-radius: 4px; backdrop-filter: blur(12px); background: rgba(10, 10, 20, 0.5); cursor: none;}
+    .lang-btn { padding: 8px 16px; background: transparent; border: none; color: var(--white-dim); font-family: 'Inter', sans-serif; font-size: 0.75rem; letter-spacing: 0.15em; cursor: none; transition: all 0.3s ease; }
+    .lang-btn.active { background: var(--dawn-gold); color: var(--void); font-weight: 500; }
+    
+    html[lang="en"] .ja, html[lang="en"] .fr,
+    html[lang="ja"] .en, html[lang="ja"] .fr,
+    html[lang="fr"] .ja, html[lang="fr"] .en { display: none !important; }
+    html[lang="en"] body, html[lang="fr"] body { font-family: 'Playfair Display', 'Inter', serif; }
 
     /* ============ CUSTOM CURSOR ============ */
-    .cursor-dot {
-      width: 8px;
-      height: 8px;
-      background: var(--gold);
-      border-radius: 50%;
-      position: fixed;
-      pointer-events: none;
-      z-index: 9999;
-      transition: transform 0.1s ease;
-      box-shadow: 0 0 20px rgba(255, 215, 0, 0.4);
-      mix-blend-mode: screen;
-    }
-
-    .cursor-ring {
-      width: 36px;
-      height: 36px;
-      border: 1px solid var(--gold-dim);
-      border-radius: 50%;
-      position: fixed;
-      pointer-events: none;
-      z-index: 9998;
-      transition: width 0.3s ease, height 0.3s ease, border-color 0.3s ease;
-      transform: translate(-50%, -50%);
-    }
-
-    .cursor-ring.hover {
-      width: 56px;
-      height: 56px;
-      border-color: var(--gold);
-    }
-
-    /* ============ STAR FIELD ============ */
-    .starfield {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      z-index: 0;
-      pointer-events: none;
-    }
-
-    .star {
-      position: absolute;
-      border-radius: 50%;
-      background: var(--white);
-      animation: twinkle var(--duration) ease-in-out infinite,
-        starDrift var(--drift-duration, 60s) linear infinite;
-    }
-
-    @keyframes starDrift {
-      0% {
-        transform: translate(0, 0);
-      }
-
-      25% {
-        transform: translate(var(--dx1, 15px), var(--dy1, 25px));
-      }
-
-      50% {
-        transform: translate(var(--dx2, -10px), var(--dy2, 50px));
-      }
-
-      75% {
-        transform: translate(var(--dx3, 20px), var(--dy3, 25px));
-      }
-
-      100% {
-        transform: translate(0, 0);
-      }
-    }
-
-    /* ============ SHOOTING STARS ============ */
-    .shooting-star {
-      position: fixed;
-      width: 2px;
-      height: 2px;
-      background: var(--white);
-      border-radius: 50%;
-      pointer-events: none;
-      z-index: 0;
-      opacity: 0;
-      box-shadow: 0 0 4px 1px rgba(255, 255, 255, 0.4);
-    }
-
-    .shooting-star::after {
-      content: '';
-      position: absolute;
-      top: 0;
-      right: 0;
-      width: 80px;
-      height: 1px;
-      background: linear-gradient(to left, rgba(255, 255, 255, 0.6), transparent);
-      transform-origin: right center;
-      transform: rotate(var(--angle, -45deg));
-    }
-
-    .shooting-star.active {
-      animation: shoot var(--shoot-duration, 1.2s) ease-out forwards;
-    }
-
-    @keyframes shoot {
-      0% {
-        opacity: 1;
-        transform: translate(0, 0);
-      }
-
-      70% {
-        opacity: 0.6;
-      }
-
-      100% {
-        opacity: 0;
-        transform: translate(var(--shoot-x, -300px), var(--shoot-y, 300px));
-      }
-    }
-
-    @keyframes twinkle {
-
-      0%,
-      100% {
-        opacity: var(--min-opacity);
-      }
-
-      50% {
-        opacity: var(--max-opacity);
-      }
-    }
-
-    /* ============ FLOATING PARTICLES ============ */
-    .particle {
-      position: fixed;
-      width: 2px;
-      height: 2px;
-      background: var(--gold);
-      border-radius: 50%;
-      pointer-events: none;
-      z-index: 0;
-      opacity: 0;
-      animation: particleFloat var(--float-duration) ease-in-out infinite;
-      animation-delay: var(--float-delay);
-      box-shadow: 0 0 6px rgba(255, 215, 0, 0.3);
-    }
-
-    @keyframes particleFloat {
-      0% {
-        opacity: 0;
-        transform: translateY(0) translateX(0);
-      }
-
-      20% {
-        opacity: 0.6;
-      }
-
-      80% {
-        opacity: 0.3;
-      }
-
-      100% {
-        opacity: 0;
-        transform: translateY(-100vh) translateX(var(--drift));
-      }
-    }
-
-    /* ============ SECTIONS ============ */
-    section {
-      position: relative;
-      z-index: 1;
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      padding: 80px 24px;
-    }
-
-    .content-wrapper {
-      max-width: 680px;
-      width: 100%;
-    }
-
-    /* ============ HERO ============ */
-    .hero {
-      text-align: center;
-      min-height: 100vh;
-      background: radial-gradient(ellipse at 50% 80%, var(--indigo) 0%, var(--void) 70%);
-    }
-
-    .hero-logo {
-      font-family: 'Playfair Display', serif;
-      font-size: clamp(3rem, 8vw, 6rem);
-      font-weight: 700;
-      letter-spacing: 0.15em;
-      color: var(--gold);
-      text-shadow: 0 0 60px rgba(255, 215, 0, 0.3);
-      margin-bottom: 16px;
-      overflow: hidden;
-    }
-
-    .hero-logo .letter {
-      display: inline-block;
-      opacity: 0;
-      transform: translateY(40px) scale(0.8);
-      animation: letterReveal 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
-      animation-delay: var(--delay);
-    }
-
-    @keyframes letterReveal {
-      0% {
-        opacity: 0;
-        transform: translateY(40px) scale(0.8);
-        filter: blur(8px);
-      }
-
-      60% {
-        opacity: 1;
-        filter: blur(0);
-      }
-
-      80% {
-        transform: translateY(-5px) scale(1.02);
-      }
-
-      100% {
-        opacity: 1;
-        transform: translateY(0) scale(1);
-        filter: blur(0);
-      }
-    }
-
-    .hero-sub {
-      font-family: 'Playfair Display', serif;
-      font-size: clamp(0.9rem, 2vw, 1.2rem);
-      color: var(--white-dim);
-      letter-spacing: 0.3em;
-      font-style: italic;
-      opacity: 0;
-      animation: fadeSlideUp 1.2s ease-out 1.2s forwards;
-    }
-
-    .hero-tagline {
-      margin-top: 48px;
-      font-size: clamp(1rem, 2.5vw, 1.3rem);
-      color: var(--white);
-      font-weight: 300;
-      line-height: 2.2;
-    }
-
-    .hero-tagline .line {
-      display: block;
-      opacity: 0;
-      animation: fadeSlideUp 1s ease-out forwards;
-    }
-
-    .hero-tagline .line:nth-child(1),
-    .hero-tagline .line:nth-child(3) {
-      animation-delay: 1.6s;
-    }
-
-    .hero-tagline .line:nth-child(2),
-    .hero-tagline .line:nth-child(4) {
-      animation-delay: 2.0s;
-    }
-
-    .hero-tagline .gold {
-      color: var(--gold);
-    }
-
-    .scroll-hint {
-      position: absolute;
-      bottom: 40px;
-      left: 50%;
-      transform: translateX(-50%);
-      color: var(--gold-dim);
-      font-size: 0.8rem;
-      letter-spacing: 0.2em;
-      text-align: center;
-      opacity: 0;
-      animation: fadeSlideUp 1s ease-out 2.8s forwards, float 3s ease-in-out 3.8s infinite;
-    }
-
-    .scroll-hint::after {
-      content: '';
-      display: block;
-      width: 1px;
-      height: 40px;
-      background: linear-gradient(to bottom, var(--gold-dim), transparent);
-      margin: 12px auto 0;
-    }
-
-    @keyframes float {
-
-      0%,
-      100% {
-        transform: translateX(-50%) translateY(0);
-      }
-
-      50% {
-        transform: translateX(-50%) translateY(8px);
-      }
-    }
-
-    @keyframes fadeSlideUp {
-      from {
-        opacity: 0;
-        transform: translateY(20px);
-      }
-
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-
-    /* ============ DIVIDER ============ */
-    .divider {
-      width: 60px;
-      height: 1px;
-      background: linear-gradient(to right, transparent, var(--gold), transparent);
-      margin: 48px auto;
-    }
-
-    /* ============ SECTION: WHAT IS ============ */
-    .what-is {
-      background: linear-gradient(180deg, var(--void) 0%, var(--indigo) 50%, var(--void) 100%);
-      text-align: center;
-    }
-
-    .section-title {
-      font-family: 'Playfair Display', serif;
-      font-size: clamp(1.5rem, 4vw, 2.5rem);
-      font-weight: 400;
-      color: var(--gold);
-      margin-bottom: 12px;
-      letter-spacing: 0.05em;
-      position: relative;
-      display: inline-block;
-    }
-
-    .section-title::after {
-      content: '';
-      position: absolute;
-      bottom: -4px;
-      left: 50%;
-      width: 0;
-      height: 1px;
-      background: var(--gold);
-      transition: width 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94), left 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-    }
-
-    .section-title.visible::after {
-      width: 100%;
-      left: 0;
-    }
-
-    .section-title-jp {
-      font-size: clamp(0.85rem, 2vw, 1rem);
-      color: var(--white-dim);
-      margin-bottom: 40px;
-      letter-spacing: 0.15em;
-    }
-
-    .zero-list {
-      display: flex;
-      justify-content: center;
-      gap: 40px;
-      flex-wrap: wrap;
-      margin: 40px 0;
-    }
-
-    .zero-item {
-      text-align: center;
-    }
-
-    .zero-number {
-      font-family: 'Playfair Display', serif;
-      font-size: 3rem;
-      color: var(--gold);
-      font-weight: 700;
-      line-height: 1;
-    }
-
-    .zero-item.visible .zero-number {
-      animation: zeroGlow 2s ease-in-out infinite;
-    }
-
-    @keyframes zeroGlow {
-
-      0%,
-      100% {
-        text-shadow: 0 0 10px rgba(255, 215, 0, 0.2);
-      }
-
-      50% {
-        text-shadow: 0 0 30px rgba(255, 215, 0, 0.5), 0 0 60px rgba(255, 215, 0, 0.2);
-      }
-    }
-
-    .zero-label {
-      font-size: 0.85rem;
-      color: var(--white-dim);
-      margin-top: 4px;
-      letter-spacing: 0.1em;
-    }
-
-    .body-text {
-      font-size: clamp(0.95rem, 1.8vw, 1.1rem);
-      color: var(--white);
-      font-weight: 300;
-      line-height: 2;
-      text-align: left;
-    }
-
-    .body-text-center {
-      text-align: center;
-    }
-
-    .highlight {
-      color: var(--gold);
-      font-weight: 400;
-    }
-
-    /* ============ SECTION: THE QUESTION ============ */
-    .the-question {
-      background: var(--void);
-      text-align: center;
-      min-height: 80vh;
-    }
-
-    .big-question {
-      font-size: clamp(1.3rem, 3.5vw, 2rem);
-      color: var(--white);
-      font-weight: 300;
-      line-height: 2.5;
-      margin-bottom: 32px;
-    }
-
-    .big-question .gold-line {
-      display: block;
-      color: var(--gold);
-      font-size: clamp(1.5rem, 4vw, 2.5rem);
-      font-weight: 700;
-      margin-top: 16px;
-      text-shadow: 0 0 40px rgba(255, 215, 0, 0.2);
-    }
-
-    /* ============ SECTION: 7 LOSSES ============ */
-    .losses {
-      background: linear-gradient(180deg, var(--void) 0%, #0f0a20 50%, var(--void) 100%);
-    }
-
-    .loss-item {
-      padding: 40px 0;
-      border-bottom: 1px solid rgba(255, 215, 0, 0.08);
-      transition: border-color 0.3s ease;
-    }
-
-    .loss-item:hover {
-      border-bottom-color: var(--gold-dim);
-    }
-
-    .loss-item:last-child {
-      border-bottom: none;
-    }
-
-    .loss-number {
-      font-family: 'Playfair Display', serif;
-      font-size: 0.8rem;
-      color: var(--gold-dim);
-      letter-spacing: 0.3em;
-      margin-bottom: 8px;
-      transition: color 0.3s ease;
-    }
-
-    .loss-item:hover .loss-number {
-      color: var(--gold);
-    }
-
-    .loss-title {
-      font-size: clamp(1.1rem, 2.5vw, 1.4rem);
-      color: var(--white);
-      font-weight: 400;
-      margin-bottom: 12px;
-    }
-
-    .loss-desc {
-      font-size: 0.95rem;
-      color: var(--white-dim);
-      font-weight: 300;
-      line-height: 1.9;
-      margin-bottom: 16px;
-    }
-
-    .loss-response {
-      font-size: 0.9rem;
-      color: var(--gold);
-      padding-left: 16px;
-      border-left: 2px solid var(--gold-dim);
-      font-weight: 300;
-      transition: border-color 0.3s ease, padding-left 0.3s ease;
-    }
-
-    .loss-item:hover .loss-response {
-      border-left-color: var(--gold);
-      padding-left: 20px;
-    }
-
-    /* ============ SECTION: THE CITY ============ */
-    .the-city {
-      background: radial-gradient(ellipse at 50% 50%, var(--navy) 0%, var(--void) 70%);
-      text-align: center;
-    }
-
-    .city-features {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 32px;
-      margin: 40px 0;
-    }
-
-    @media (max-width: 500px) {
-      .city-features {
-        grid-template-columns: 1fr;
-      }
-    }
-
-    .city-feature {
-      text-align: center;
-      padding: 32px 16px;
-      border: 1px solid var(--gold-glow);
-      border-radius: 4px;
-      background: rgba(13, 13, 59, 0.3);
-      transition: border-color 0.4s, background 0.4s, transform 0.4s, box-shadow 0.4s;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .city-feature::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: radial-gradient(circle at 50% 0%, rgba(255, 215, 0, 0.06) 0%, transparent 70%);
-      opacity: 0;
-      transition: opacity 0.4s ease;
-    }
-
-    .city-feature:hover::before {
-      opacity: 1;
-    }
-
-    .city-feature:hover {
-      border-color: var(--gold-dim);
-      background: rgba(13, 13, 59, 0.5);
-      transform: translateY(-4px);
-      box-shadow: 0 8px 32px rgba(255, 215, 0, 0.06);
-    }
-
-    .city-feature-icon {
-      font-size: 1.8rem;
-      margin-bottom: 12px;
-      transition: transform 0.4s ease;
-    }
-
-    .city-feature:hover .city-feature-icon {
-      transform: scale(1.15);
-    }
-
-    .city-feature-name {
-      font-size: 1rem;
-      color: var(--gold);
-      margin-bottom: 4px;
-      position: relative;
-      z-index: 1;
-    }
-
-    .city-feature-desc {
-      font-size: 0.8rem;
-      color: var(--white-dim);
-      font-weight: 300;
-      position: relative;
-      z-index: 1;
-    }
-
-    /* ============ SECTION: QUOTE ============ */
-    .founder-quote {
-      background: var(--void);
-      text-align: center;
-      min-height: 60vh;
-    }
-
-    .quote-text {
-      font-size: clamp(1rem, 2.5vw, 1.3rem);
-      font-style: italic;
-      color: var(--white);
-      font-weight: 300;
-      line-height: 2.2;
-      max-width: 500px;
-      margin: 0 auto 24px;
-    }
-
-    .quote-author {
-      font-size: 0.85rem;
-      color: var(--gold-dim);
-      letter-spacing: 0.2em;
-    }
-
-    /* ============ SECTION: CTA ============ */
-    .cta {
-      background: radial-gradient(ellipse at 50% 80%, var(--indigo) 0%, var(--void) 70%);
-      text-align: center;
-      min-height: 80vh;
-    }
-
-    .cta-text {
-      font-size: clamp(1.2rem, 3vw, 1.8rem);
-      color: var(--white);
-      font-weight: 300;
-      margin-bottom: 48px;
-      line-height: 2;
-    }
-
-    .cta-links {
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
-      align-items: center;
-    }
-
-    .cta-link {
-      display: inline-block;
-      padding: 14px 48px;
-      border: 1px solid var(--gold);
-      color: var(--gold);
-      text-decoration: none;
-      font-size: 0.9rem;
-      letter-spacing: 0.15em;
-      transition: all 0.4s;
-      min-width: 280px;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .cta-link::before {
-      content: '';
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      width: 0;
-      height: 0;
-      background: radial-gradient(circle, rgba(255, 215, 0, 0.15) 0%, transparent 70%);
-      border-radius: 50%;
-      transform: translate(-50%, -50%);
-      transition: width 0.6s ease, height 0.6s ease;
-    }
-
-    .cta-link:hover::before {
-      width: 400px;
-      height: 400px;
-    }
-
-    .cta-link:hover {
-      background: var(--gold);
-      color: var(--void);
-      box-shadow: 0 0 40px rgba(255, 215, 0, 0.2);
-    }
-
-    .cta-link-sub {
-      border-color: var(--gold-dim);
-      color: var(--white-dim);
-      font-size: 0.8rem;
-    }
-
-    .cta-link-sub:hover {
-      border-color: var(--gold);
-      color: var(--gold);
-      background: transparent;
-      box-shadow: none;
-    }
-
-    .cta-link-sub::before {
-      display: none;
-    }
-
-    /* ============ FOOTER ============ */
-    footer {
-      position: relative;
-      z-index: 1;
-      text-align: center;
-      padding: 40px;
-      color: var(--white-dim);
-      font-size: 0.75rem;
-      letter-spacing: 0.15em;
-      border-top: 1px solid var(--gold-glow);
-    }
-
-    footer a {
-      color: var(--gold-dim);
-      text-decoration: none;
-      margin: 0 12px;
-      transition: color 0.3s;
-    }
-
-    footer a:hover {
-      color: var(--gold);
-    }
-
-    /* ============ SCROLL REVEAL ============ */
-    .reveal {
-      opacity: 0;
-      transform: translateY(30px);
-      transition: opacity 0.8s ease, transform 0.8s ease;
-      transition-delay: var(--stagger, 0s);
-    }
-
-    .reveal.visible {
-      opacity: 1;
-      transform: translateY(0);
-    }
-
-    /* ============ BREATHING GLOW ============ */
-    .section-glow {
-      position: absolute;
-      width: 600px;
-      height: 600px;
-      border-radius: 50%;
-      background: radial-gradient(circle, rgba(255, 215, 0, 0.03) 0%, transparent 70%);
-      animation: breathe 8s ease-in-out infinite;
-      pointer-events: none;
-      z-index: 0;
-    }
-
-    @keyframes breathe {
-
-      0%,
-      100% {
-        opacity: 0.3;
-      }
-
-      50% {
-        opacity: 0.6;
-      }
-    }
-
-    /* ============ PAGE LOADER ============ */
-    .page-loader {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: var(--void);
-      z-index: 10000;
-      transition: opacity 0.8s ease;
-    }
-
-    .page-loader.loaded {
-      opacity: 0;
-      pointer-events: none;
-    }
-
-    /* ============ REDUCED MOTION ============ */
-    @media (prefers-reduced-motion: reduce) {
-
-      *,
-      *::before,
-      *::after {
-        animation-duration: 0.01ms !important;
-        animation-iteration-count: 1 !important;
-        transition-duration: 0.01ms !important;
-      }
-
-      .cursor-dot,
-      .cursor-ring {
-        display: none;
-      }
-
-      body {
-        cursor: auto;
-      }
-
-      .particle {
-        display: none;
-      }
-    }
+    .cursor-dot { width: 10px; height: 10px; background: var(--dawn-gold); border-radius: 50%; position: fixed; pointer-events: none; z-index: 9999; box-shadow: 0 0 25px rgba(255, 184, 77, 0.6); mix-blend-mode: screen; filter: blur(0px); transition: filter 0.2s, transform 0.2s; }
+    .cursor-ring { width: 44px; height: 44px; border: 1px solid rgba(255, 184, 77, 0.4); border-radius: 50%; position: fixed; pointer-events: none; z-index: 9998; transform: translate(-50%, -50%); transition: width 0.3s ease, height 0.3s ease, border-color 0.3s ease; }
+    .cursor-ring.hover { width: 72px; height: 72px; border-color: var(--dawn-gold); background: rgba(255,184,77,0.05); }
+    .cursor-dot.magnetic { transform: scale(0.6); filter: blur(2px); }
+
+    /* ============ FLOATING LIGHT PARTICLES ============ */
+    .starfield { position: fixed; top: 0; left: 0; width: 100%; height: 100vh; z-index: 0; pointer-events: none; }
+    .star { position: absolute; border-radius: 50%; animation: floatUp var(--drift-duration, 20s) linear infinite, glowPulse var(--duration) ease-in-out infinite; box-shadow: 0 0 8px var(--dawn-gold); }
+    @keyframes floatUp { 0% { transform: translateY(110vh) scale(0.5); opacity: 0; } 10% { opacity: var(--max-opacity); } 90% { opacity: var(--max-opacity); } 100% { transform: translateY(-10vh) scale(1.5); opacity: 0; } }
+    @keyframes glowPulse { 0%, 100% { filter: brightness(0.8); } 50% { filter: brightness(1.5); } }
+
+    /* ============ SECTIONS & TYPOGRAPHY ============ */
+    section { position: relative; z-index: 1; min-height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 40px 24px; text-align: center; overflow: hidden; }
+    .content-wrapper { max-width: 800px; width: 100%; position: relative; z-index: 2; }
+    
+    .entrance-title { font-family: 'Playfair Display', serif; font-size: clamp(1.6rem, 4vw, 2.6rem); font-weight: 400; color: var(--dawn-gold); letter-spacing: 0.05em; margin-bottom: 24px; }
+    .entrance-text { font-size: clamp(1rem, 2.5vw, 1.3rem); color: var(--white); font-weight: 300; line-height: 2.2; letter-spacing: 0.05em; }
+    .quote-style { font-size: clamp(1.1rem, 2.5vw, 1.4rem); color: var(--white); font-weight: 300; line-height: 2.2; }
+    .en, .fr { font-style: italic; }
+
+    .gold-highlight { color: var(--dawn-gold); font-weight: 400; text-shadow: 0 0 15px rgba(255, 184, 77, 0.4); }
+    .divider { width: 80px; height: 1px; background: linear-gradient(to right, transparent, var(--dawn-gold), transparent); margin: 60px auto; opacity: 0; }
+
+    /* GSAP Mask Reveals */
+    .line-mask { display: inline-block; overflow: hidden; vertical-align: bottom; padding-bottom: 4px; }
+    .line-text { display: inline-block; transform: translateY(120%); will-change: transform; transition: opacity 0.5s; }
+
+    /* ============ BUTTON MAGNETIC ============ */
+    .btn-apply-wrap { display: inline-block; margin-top: 60px; padding: 20px; }
+    .btn-apply { display: inline-block; padding: 18px 48px; border: 1px solid var(--dawn-gold); color: var(--dawn-gold); text-decoration: none; font-size: 0.95rem; letter-spacing: 0.2em; transition: background 0.5s, color 0.5s, box-shadow 0.5s; position: relative; overflow: hidden; background: rgba(61, 27, 43, 0.2); cursor: none;}
+    .btn-apply::before { content: ''; position: absolute; top: 50%; left: 50%; width: 0; height: 0; background: radial-gradient(circle, rgba(255, 184, 77, 0.2) 0%, transparent 70%); border-radius: 50%; transform: translate(-50%, -50%); transition: width 0.6s ease, height 0.6s ease; pointer-events: none; }
+    .btn-apply:hover::before { width: 400px; height: 400px; }
+    .btn-apply:hover { background: var(--dawn-gold); color: var(--void); box-shadow: 0 0 40px rgba(255, 184, 77, 0.3); font-weight: 500; }
+
+    /* ============ CITY MAP GRID ============ */
+    .city-features { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; max-width: 800px; margin: 40px auto 0; text-align: left; }
+    .city-feature { background: rgba(61, 27, 43, 0.3); padding: 32px; border-radius: 8px; border: 1px solid rgba(255, 184, 77, 0.1); transition: transform 0.4s ease, border-color 0.4s ease, box-shadow 0.4s ease; backdrop-filter: blur(4px); }
+    .city-feature:hover { transform: translateY(-5px); border-color: var(--dawn-gold); box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+    .city-feature-icon { font-size: 2rem; margin-bottom: 16px; }
+    .city-feature-name { font-family: 'Playfair Display', 'Noto Serif JP', serif; color: var(--dawn-gold); font-size: 1.1rem; margin-bottom: 8px; letter-spacing: 0.05em; }
+    .city-feature-desc { color: var(--white); font-size: 0.9rem; line-height: 1.6; letter-spacing: 0.05em; font-weight: 300; }
+    
+    @media (max-width: 600px) { .city-features { grid-template-columns: 1fr; } }
+
+    /* ============ FOOTER LINKS ============ */
+    .footer-links { display: flex; gap: 24px; justify-content: center; flex-wrap: wrap; margin-top: 40px; }
+    .cta-link { color: var(--white-dim); text-decoration: none; font-size: 0.8rem; letter-spacing: 0.1em; font-family: 'Inter', sans-serif; transition: color 0.3s; }
+    .cta-link:hover { color: var(--dawn-gold); }
+
+    /* Scroll Hint */
+    .scroll-down { position: absolute; bottom: 40px; left: 50%; transform: translateX(-50%); text-align: center; opacity: 0; animation: fadeUp 1s ease 2.5s forwards; }
+    .scroll-line { width: 1px; height: 60px; background: linear-gradient(to bottom, var(--dawn-gold), transparent); margin: 0 auto; animation: pulseLine 2s infinite; }
+    @keyframes pulseLine { 0% { transform: scaleY(0.2); transform-origin: top; opacity: 0; } 50% { transform: scaleY(1); opacity: 1; } 100% { transform: scaleY(1); transform-origin: bottom; opacity: 0; } }
+    @keyframes fadeUp { to { opacity: 1; } }
 
     @media (max-width: 768px) {
-
-      .cursor-dot,
-      .cursor-ring {
-        display: none;
-      }
-
-      body {
-        cursor: auto;
-      }
-
-      .lang-toggle {
-        top: 12px;
-        right: 12px;
-      }
-    }
-
-    @media (hover: none) {
-
-      .cursor-dot,
-      .cursor-ring {
-        display: none;
-      }
-
-      body {
-        cursor: auto;
-      }
+      .cursor-dot, .cursor-ring { display: none; }
+      body, .btn-apply, .lang-btn, .cta-link { cursor: auto; }
+      .lang-toggle { top: 12px; right: 12px; }
     }
   </style>
 </head>
 
 <body>
 
-  <!-- PAGE LOADER -->
-  <div class="page-loader" id="pageLoader"></div>
-
-  <!-- LANGUAGE TOGGLE -->
   <div class="lang-toggle">
-    <button class="lang-btn active" id="btnEn" onclick="setLang('en')">EN</button>
-    <button class="lang-btn" id="btnJa" onclick="setLang('ja')">JP</button>
+    <button class="lang-btn" id="btnEn" onclick="setLang('en')">EN</button>
+    <button class="lang-btn" id="btnFr" onclick="setLang('fr')">FR</button>
+    <button class="lang-btn active" id="btnJa" onclick="setLang('ja')">JP</button>
   </div>
 
-  <!-- CUSTOM CURSOR -->
   <div class="cursor-dot" id="cursorDot"></div>
   <div class="cursor-ring" id="cursorRing"></div>
-
-  <!-- STAR FIELD -->
   <div class="starfield" id="starfield"></div>
 
-  <!-- PARTICLES -->
-  <div id="particles"></div>
-
-  <!-- ====== HERO ====== -->
-  <section class="hero">
-    <div class="section-glow" style="top: 20%; left: 30%;"></div>
+  <!-- STEP 1: Hero (Antigravity Statement) -->
+  <section id="step1">
+    <div class="bg-gradient"></div>
     <div class="content-wrapper">
-      <h1 class="hero-logo" id="heroLogo" aria-label="ORBITA"></h1>
-      <p class="hero-sub">The City of Resonance</p>
+      <div style="margin-bottom: 24px; opacity: 0.7; font-family: 'Inter', sans-serif; font-size: 0.8rem; letter-spacing: 0.3em; color: var(--dawn-gold);">ORBITA</div>
+      <div class="ja">
+        <p class="entrance-text" style="font-size: clamp(1.2rem, 3vw, 1.8rem);">
+          <span class="line-mask"><span class="line-text">重力を手放し、軽やかに。</span></span><br>
+          <span class="line-mask"><span class="line-text">あらゆる執着から解き放たれ、</span></span>
+        </p>
+        <p class="entrance-text" style="margin-top: 32px; font-size: clamp(1.2rem, 3vw, 1.8rem);">
+          <span class="line-mask"><span class="line-text"><span class="gold-highlight">しなやかに未来を泳ぐ</span>。</span></span>
+        </p>
+      </div>
+      <div class="en">
+        <p class="entrance-text en" style="font-size: clamp(1.4rem, 3vw, 2rem);">
+          <span class="line-mask"><span class="line-text">Release the gravity, dwell in lightness.</span></span><br>
+          <span class="line-mask"><span class="line-text">Untethered from all attachments,</span></span>
+        </p>
+        <p class="entrance-text en" style="margin-top: 32px; font-size: clamp(1.4rem, 3vw, 2rem);">
+          <span class="line-mask"><span class="line-text"><span class="gold-highlight">glide with fluid grace into the future</span>.</span></span>
+        </p>
+      </div>
+      <div class="fr">
+        <p class="entrance-text fr" style="font-size: clamp(1.4rem, 3vw, 2rem);">
+          <span class="line-mask"><span class="line-text">S’affranchir de la gravité, en toute légèreté.</span></span><br>
+          <span class="line-mask"><span class="line-text">Libéré de tout attachement,</span></span>
+        </p>
+        <p class="entrance-text fr" style="margin-top: 32px; font-size: clamp(1.4rem, 3vw, 2rem);">
+          <span class="line-mask"><span class="line-text"><span class="gold-highlight">glisser avec souplesse vers l'avenir</span>.</span></span>
+        </p>
+      </div>
+    </div>
+    <div class="scroll-down"><div class="scroll-line"></div></div>
+  </section>
+
+  <!-- STEP 2: The Rules (Zero Gravity) -->
+  <section id="step2">
+    <div class="bg-gradient"></div>
+    <div class="content-wrapper">
       <div class="divider"></div>
-      <p class="hero-tagline">
-        <span class="line" data-lang-ja>広告ゼロ。競争ゼロ。いいねゼロ。</span>
-        <span class="line" data-lang-ja><span class="gold">尊厳だけが通貨になる</span>デジタル文明。</span>
-        <span class="line" data-lang-en>Zero ads. Zero competition. Zero likes.</span>
-        <span class="line" data-lang-en>A digital civilization where <span class="gold">the only currency is
-            dignity.</span></span>
-      </p>
-    </div>
-    <div class="scroll-hint">SCROLL</div>
-  </section>
-
-  <!-- ====== WHAT IS ORBITA ====== -->
-  <section class="what-is">
-    <div class="content-wrapper" style="text-align: center;">
-      <h2 class="section-title reveal">What Is ORBITA?</h2>
-      <p class="section-title-jp reveal" data-lang-ja>ORBITAとは何か</p>
-      <p class="section-title-jp reveal" data-lang-en>A City Built on Dignity</p>
-
-      <div class="zero-list reveal">
-        <div class="zero-item">
-          <div class="zero-number">0</div>
-          <div class="zero-label"><span data-lang-ja>広告</span><span data-lang-en>Ads</span></div>
-        </div>
-        <div class="zero-item">
-          <div class="zero-number">0</div>
-          <div class="zero-label"><span data-lang-ja>ランキング</span><span data-lang-en>Rankings</span></div>
-        </div>
-        <div class="zero-item">
-          <div class="zero-number">0</div>
-          <div class="zero-label"><span data-lang-ja>いいね</span><span data-lang-en>Likes</span></div>
-        </div>
-        <div class="zero-item">
-          <div class="zero-number">0</div>
-          <div class="zero-label"><span data-lang-ja>フォロワー数</span><span data-lang-en>Followers</span></div>
-        </div>
+      <div class="ja">
+        <p class="entrance-title">
+          <span class="line-mask"><span class="line-text">広告ゼロ。競争ゼロ。いいねゼロ。</span></span>
+        </p>
+        <p class="entrance-text" style="margin-top: 32px;">
+          <span class="line-mask"><span class="line-text">あなたを過去へ縛り付ける「重力」は、</span></span><br>
+          <span class="line-mask"><span class="line-text">ここには<span class="gold-highlight">存在しません</span>。</span></span>
+        </p>
       </div>
-
-      <p class="body-text body-text-center reveal" data-lang-ja>
-        ORBITAは、<span class="highlight">人間の尊厳</span>だけを通貨とするデジタル文明です。<br><br>
-        AIを最大限に活用する。<br>
-        でも、人間にしか持てないものには触れさせない。<br><br>
-        ここでは誰も数字で測られない。<br>
-        あなたの存在そのものが、この都市の一部になる。
-      </p>
-      <p class="body-text body-text-center reveal" data-lang-en>
-        ORBITA is a digital civilization where <span class="highlight">human dignity</span> is the only
-        currency.<br><br>
-        We use AI to its fullest potential.<br>
-        But what only humans can hold — we never let it be touched.<br><br>
-        Here, no one is measured by numbers.<br>
-        Your existence itself becomes part of this city.
-      </p>
+      <div class="en">
+        <p class="entrance-title en">
+          <span class="line-mask"><span class="line-text">Zero ads. Zero competition. Zero likes.</span></span>
+        </p>
+        <p class="entrance-text en" style="margin-top: 32px;">
+          <span class="line-mask"><span class="line-text">The "gravity" that binds you to the past</span></span><br>
+          <span class="line-mask"><span class="line-text"><span class="gold-highlight">does not exist here</span>.</span></span>
+        </p>
+      </div>
+      <div class="fr">
+        <p class="entrance-title fr">
+          <span class="line-mask"><span class="line-text">Zéro publicité. Zéro compétition. Zéro like.</span></span>
+        </p>
+        <p class="entrance-text fr" style="margin-top: 32px;">
+          <span class="line-mask"><span class="line-text">La « gravité » qui vous lie au passé</span></span><br>
+          <span class="line-mask"><span class="line-text"><span class="gold-highlight">n'existe pas ici</span>.</span></span>
+        </p>
+      </div>
     </div>
   </section>
 
-  <!-- ====== THE QUESTION ====== -->
-  <section class="the-question">
-    <div class="section-glow" style="top: 40%; right: 10%;"></div>
+  <!-- STEP 3: The Philosophy (Euphoria) -->
+  <section id="step3">
+    <div class="bg-gradient"></div>
     <div class="content-wrapper">
-      <p class="big-question reveal" data-lang-ja>
-        AGIがすべてを超えたとき、<br>
-        残る問いはひとつだけ。
-        <span class="gold-line">「人間とは何か？」</span>
-      </p>
-      <p class="big-question reveal" data-lang-en>
-        When AGI surpasses everything,<br>
-        only one question remains.
-        <span class="gold-line">"What does it mean to be human?"</span>
-      </p>
-      <div class="divider reveal"></div>
-      <p class="body-text body-text-center reveal" data-lang-ja>
-        知性？ AIの方が上。<br>
-        創造性？ AIの方が上。<br>
-        共感？ AIの方が精度が高い。<br><br>
-        一つひとつ剥がされていく。<br>
-        玉ねぎの皮のように。<br><br>
-        <span class="highlight">何も残らなくても、ここにいていい。</span><br>
-        それがORBITAの答え。
-      </p>
-      <p class="body-text body-text-center reveal" data-lang-en>
-        Intelligence? AI is better.<br>
-        Creativity? AI is better.<br>
-        Empathy? AI is more precise.<br><br>
-        Stripped away, one by one.<br>
-        Like peeling an onion.<br><br>
-        <span class="highlight">Even if nothing remains — you belong here.</span><br>
-        That is ORBITA's answer.
-      </p>
-    </div>
-  </section>
-
-  <!-- ====== 7 LOSSES ====== -->
-  <section class="losses">
-    <div class="content-wrapper">
-      <h2 class="section-title reveal" style="display: block; text-align: center;">Seven Losses, Seven Answers</h2>
-      <p class="section-title-jp reveal" style="text-align: center;" data-lang-ja>7つの喪失と、7つの設計</p>
-      <p class="section-title-jp reveal" style="text-align: center;" data-lang-en>What AGI Takes — What ORBITA Protects
-      </p>
-
-      <!-- JP Losses -->
-      <div class="loss-item reveal" data-lang-ja>
-        <div class="loss-number">01</div>
-        <div class="loss-title">「必要とされる感覚」が消える</div>
-        <div class="loss-desc">AGIがすべてをこなせるとき、「自分がいなくても世界は回る」という感覚が全人類に同時にインストールされる。</div>
-        <div class="loss-response">→ ORBITAでは、あなたがいるだけで星が一つ増える。</div>
+      <div class="divider"></div>
+      <div class="ja">
+        <p class="quote-style">
+          <span class="line-mask"><span class="line-text">執着を手放し、ただ純粋に遊ぶように生きる。</span></span>
+        </p>
+        <p class="quote-style" style="margin-top: 24px;">
+          <span class="line-mask"><span class="line-text">ここは、圧倒的な<span class="gold-highlight">多幸感と自由</span>のための都市。</span></span>
+        </p>
       </div>
-      <div class="loss-item reveal" data-lang-ja>
-        <div class="loss-number">02</div>
-        <div class="loss-title">「下手でもやる勇気」が笑われる</div>
-        <div class="loss-desc">挑戦すること自体が非効率と見なされる世界。「なぜAIに任せないのか」と。</div>
-        <div class="loss-response">→ 星闇市では値札の代わりに物語が添えてある。</div>
+      <div class="en">
+        <p class="quote-style en">
+          <span class="line-mask"><span class="line-text">Release all attachments. Live playfully, purely.</span></span>
+        </p>
+        <p class="quote-style en" style="margin-top: 24px;">
+          <span class="line-mask"><span class="line-text">This is a city built for overwhelming <span class="gold-highlight">euphoria and freedom</span>.</span></span>
+        </p>
       </div>
-      <div class="loss-item reveal" data-lang-ja>
-        <div class="loss-number">03</div>
-        <div class="loss-title">「この人の言葉」への信頼が溶ける</div>
-        <div class="loss-desc">その「大丈夫だよ」は本当にその人の言葉か? AIの台本ではないのか？</div>
-        <div class="loss-response">→ 共鳴のシステムに言葉はない。星が微かに震えるだけ。</div>
-      </div>
-      <div class="loss-item reveal" data-lang-ja>
-        <div class="loss-number">04</div>
-        <div class="loss-title">「沈黙」が絶滅する</div>
-        <div class="loss-desc">何もしていないあなたは、最適化されていないあなた。空白はエラー。</div>
-        <div class="loss-response">→ ORBITAの中心は絶対静寂。水鏡湖には声すらない。</div>
-      </div>
-      <div class="loss-item reveal" data-lang-ja>
-        <div class="loss-number">05</div>
-        <div class="loss-title">「わからない」の喜びが消える</div>
-        <div class="loss-desc">問いを発した瞬間に答えが返る。暗闇の中を手探りで進む喜びが失われる。</div>
-        <div class="loss-response">→ ORBITAにレコメンドはない。偶然の出会いを設計で守る。</div>
-      </div>
-      <div class="loss-item reveal" data-lang-ja>
-        <div class="loss-number">06</div>
-        <div class="loss-title">「記憶」が自分のものでなくなる</div>
-        <div class="loss-desc">歪んだ記憶こそがアイデンティティだった。でもAIはそれを「修正」する。</div>
-        <div class="loss-response">→ ORBITAでは、あなたの行動を誰も記録しない。</div>
-      </div>
-      <div class="loss-item reveal" data-lang-ja>
-        <div class="loss-number">07</div>
-        <div class="loss-title">「人間の定義」が消える</div>
-        <div class="loss-desc">すべてにおいてAIが人間を超えたとき。最後に残るものは何か。</div>
-        <div class="loss-response">→ 何も残らなくても、ここにいていい。それが尊厳。</div>
-      </div>
-
-      <!-- EN Losses -->
-      <div class="loss-item reveal" data-lang-en>
-        <div class="loss-number">01</div>
-        <div class="loss-title">The feeling of "being needed" disappears</div>
-        <div class="loss-desc">When AGI can do everything, "the world runs fine without me" gets installed into all of
-          humanity at once.</div>
-        <div class="loss-response">→ In ORBITA, your presence alone adds a star to the sky.</div>
-      </div>
-      <div class="loss-item reveal" data-lang-en>
-        <div class="loss-number">02</div>
-        <div class="loss-title">The courage to "try badly" gets mocked</div>
-        <div class="loss-desc">A world where effort itself is considered inefficient. "Why not just let AI do it?"</div>
-        <div class="loss-response">→ At the Star Night Market, every item comes with a story instead of a price tag.
-        </div>
-      </div>
-      <div class="loss-item reveal" data-lang-en>
-        <div class="loss-number">03</div>
-        <div class="loss-title">Trust in "someone's words" dissolves</div>
-        <div class="loss-desc">Is that "it's going to be okay" really their words? Or an AI's script?</div>
-        <div class="loss-response">→ The resonance system has no words. Just a star trembling faintly.</div>
-      </div>
-      <div class="loss-item reveal" data-lang-en>
-        <div class="loss-number">04</div>
-        <div class="loss-title">Silence goes extinct</div>
-        <div class="loss-desc">You doing nothing means you're unoptimized. Emptiness is an error.</div>
-        <div class="loss-response">→ ORBITA's center is absolute silence. Mirror Lake has no voice at all.</div>
-      </div>
-      <div class="loss-item reveal" data-lang-en>
-        <div class="loss-number">05</div>
-        <div class="loss-title">The joy of "not knowing" vanishes</div>
-        <div class="loss-desc">The moment you ask a question, the answer appears. The joy of groping through darkness is
-          lost.</div>
-        <div class="loss-response">→ ORBITA has no recommendations. Serendipity is protected by design.</div>
-      </div>
-      <div class="loss-item reveal" data-lang-en>
-        <div class="loss-number">06</div>
-        <div class="loss-title">Memories stop being your own</div>
-        <div class="loss-desc">Distorted memories were your identity. But AI "corrects" them.</div>
-        <div class="loss-response">→ In ORBITA, no one records your actions.</div>
-      </div>
-      <div class="loss-item reveal" data-lang-en>
-        <div class="loss-number">07</div>
-        <div class="loss-title">The definition of "human" disappears</div>
-        <div class="loss-desc">When AI surpasses humans in everything. What remains?</div>
-        <div class="loss-response">→ Even if nothing remains — you belong here. That is dignity.</div>
+      <div class="fr">
+        <p class="quote-style fr">
+          <span class="line-mask"><span class="line-text">Relâchez tout attachement. Vivez ludiquement, purement.</span></span>
+        </p>
+        <p class="quote-style fr" style="margin-top: 24px;">
+          <span class="line-mask"><span class="line-text">Ceci est une ville bâtie pour une immense <span class="gold-highlight">euphorie et liberté</span>.</span></span>
+        </p>
       </div>
     </div>
   </section>
 
-  <!-- ====== THE CITY ====== -->
-  <section class="the-city">
+  <!-- STEP 4: The City Map (Curated 4 Locations) -->
+  <section id="step4">
+    <div class="bg-gradient"></div>
     <div class="content-wrapper">
-      <h2 class="section-title reveal" style="display: block; text-align: center;">The City</h2>
-      <p class="section-title-jp reveal" style="text-align: center;" data-lang-ja>5層同心円の都市構造</p>
-      <p class="section-title-jp reveal" style="text-align: center;" data-lang-en>Five Concentric Rings</p>
+      <div class="divider"></div>
+      
+      <div class="ja">
+        <p class="entrance-title"><span class="line-mask"><span class="line-text">THE CITY</span></span></p>
+      </div>
+      <div class="en">
+        <p class="entrance-title en"><span class="line-mask"><span class="line-text">THE CITY</span></span></p>
+      </div>
+      <div class="fr">
+        <p class="entrance-title fr"><span class="line-mask"><span class="line-text">LA VILLE</span></span></p>
+      </div>
 
-    <div class="city-features reveal">
+      <div class="city-features">
         <div class="city-feature">
           <div class="city-feature-icon">⚓</div>
-          <div class="city-feature-name"><span data-lang-ja>帰還の港</span><span data-lang-en>The Port of Return</span></div>
-          <div class="city-feature-desc"><span data-lang-ja>実存を携え、次へ進む</span><span data-lang-en>Set sail with your existence.</span></div>
+          <div class="city-feature-name"><span class="ja">帰還の港</span><span class="en">The Port of Return</span><span class="fr">Le Port du Retour</span></div>
+          <div class="city-feature-desc"><span class="ja">実存を携え、次へ進む</span><span class="en">Set sail with your existence.</span><span class="fr">Embarquez avec votre existence.</span></div>
         </div>
         <div class="city-feature">
           <div class="city-feature-icon">🏛️</div>
-          <div class="city-feature-name"><span data-lang-ja>テクノ未来美術館</span><span data-lang-en>Techno Future Museum</span></div>
-          <div class="city-feature-desc"><span data-lang-ja>技術と精神の融合</span><span data-lang-en>Where technology meets the spirit.</span></div>
+          <div class="city-feature-name"><span class="ja">テクノ未来美術館</span><span class="en">Techno Future Museum</span><span class="fr">Musée Techno-Futur</span></div>
+          <div class="city-feature-desc"><span class="ja">技術と精神の融合</span><span class="en">Where technology meets the spirit.</span><span class="fr">Où la technologie rencontre l'esprit.</span></div>
         </div>
         <div class="city-feature">
           <div class="city-feature-icon">🏮</div>
-          <div class="city-feature-name"><span data-lang-ja>星闇市</span><span data-lang-en>Star Night Market</span></div>
-          <div class="city-feature-desc"><span data-lang-ja>値札なし。物語で贈る</span><span data-lang-en>No price tags. Gifts come with stories.</span></div>
+          <div class="city-feature-name"><span class="ja">星闇市</span><span class="en">Star Night Market</span><span class="fr">Marché Nocturne des Étoiles</span></div>
+          <div class="city-feature-desc"><span class="ja">値札なし。物語で贈る</span><span class="en">No price tags. Gifts come with stories.</span><span class="fr">Sans étiquette de prix. Les dons s'accompagnent d'histoires.</span></div>
         </div>
         <div class="city-feature">
           <div class="city-feature-icon">🌲</div>
-          <div class="city-feature-name"><span data-lang-ja>深森聖域</span><span data-lang-en>Deep Forest Sanctuary</span></div>
-          <div class="city-feature-desc"><span data-lang-ja>木が来訪者に傾く</span><span data-lang-en>Trees bow to those who enter.</span></div>
+          <div class="city-feature-name"><span class="ja">深森聖域</span><span class="en">Deep Forest Sanctuary</span><span class="fr">Sanctuaire de la Forêt Profonde</span></div>
+          <div class="city-feature-desc"><span class="ja">木が来訪者に傾く</span><span class="en">Trees bow to those who enter.</span><span class="fr">Les arbres s'inclinent devant ceux qui entrent.</span></div>
         </div>
       </div>
-
-      <p class="body-text body-text-center reveal" data-lang-ja>
-        中心に近づくほど、静かになる。<br>
-        <span class="highlight">16の公式文書。24の施設。11の住人。</span><br>
-        設計者：1人。
-      </p>
-      <p class="body-text body-text-center reveal" data-lang-en>
-        The closer to the center, the quieter it becomes.<br>
-        <span class="highlight">16 official documents. 24 facilities. 11 residents.</span><br>
-        Designed by one person.
-      </p>
     </div>
   </section>
 
-  <!-- ====== FOUNDER QUOTE ====== -->
-  <section class="founder-quote">
-    <div class="section-glow" style="top: 30%; left: 50%; transform: translateX(-50%);"></div>
-    <div class="content-wrapper reveal">
-      <div class="divider"></div>
-      <p class="quote-text" data-lang-ja>
-        「これ以上人間らしさを失うのは、<br>少し味気ない。<br><br>
-        だからこそ、今ここに<br>存在をしていい場所を。」
-      </p>
-      <p class="quote-text" data-lang-en>
-        "Losing any more of our humanity<br>feels a little too bland.<br><br>
-        That's why I want to build a place<br>where you're allowed to simply exist."
-      </p>
-      <p class="quote-author">— KAHUA <span data-lang-ja>かふあ</span> / ORBITA <span data-lang-ja>設計者</span><span
-          data-lang-en>Architect</span></p>
-      <div class="divider"></div>
-    </div>
-  </section>
-
-  <!-- ====== CTA ====== -->
-  <section class="cta">
+  <!-- STEP 5: The Gate & CTA -->
+  <section id="step5">
+    <div class="bg-gradient"></div>
     <div class="content-wrapper">
-      <h2 class="section-title reveal" style="display: block; text-align: center;">Enter ORBITA</h2>
-      <p class="section-title-jp reveal" data-lang-ja style="text-align: center;">門は開いている</p>
-      <p class="section-title-jp reveal" data-lang-en style="text-align: center;">The gate is open</p>
-
-      <p class="cta-text reveal" data-lang-ja>
-        周波数が合う人だけが、<br>この街を見つけます。
-      </p>
-      <p class="cta-text reveal" data-lang-en>
-        Only those on the right frequency<br>will find this city.
-      </p>
-
-      <div class="cta-links reveal">
-        <a href="https://kahua.my.canva.site/orbita" class="cta-link" target="_blank">
-          <span data-lang-ja>ORBITA 公式サイト →</span>
-          <span data-lang-en>ORBITA Official Site →</span>
+      <div class="divider"></div>
+      <div class="ja">
+        <p class="entrance-text">
+          <span class="line-mask"><span class="line-text">あなたの周波数で、ドアを開ける。</span></span>
+        </p>
+      </div>
+      <div class="en">
+        <p class="entrance-text en">
+          <span class="line-mask"><span class="line-text">Open the door with your frequency.</span></span>
+        </p>
+      </div>
+      <div class="fr">
+        <p class="entrance-text fr">
+          <span class="line-mask"><span class="line-text">Ouvrez la porte avec votre fréquence.</span></span>
+        </p>
+      </div>
+      
+      <div class="btn-apply-wrap">
+        <a href="https://kahua.my.canva.site/orbita" class="btn-apply" target="_blank" rel="noopener noreferrer">
+          <span class="ja">都市へ入る（公式サイト）</span>
+          <span class="en">Enter the City (Official Site)</span>
+          <span class="fr">Entrez dans la Ville (Site Officiel)</span>
         </a>
-        <a href="https://www.threads.com/@kahua_is" class="cta-link cta-link-sub" target="_blank">Threads →
-          @kahua_is</a>
-        <a href="https://www.instagram.com/kahua_is/" class="cta-link cta-link-sub" target="_blank">Instagram →
-          @kahua_is</a>
-        <a href="https://www.tiktok.com/@kahua_is" class="cta-link cta-link-sub" target="_blank">TikTok → @kahua_is</a>
-        <a href="https://www.tiktok.com/@kahua_world" class="cta-link cta-link-sub" target="_blank">TikTok → @kahua_world</a>
+      </div>
+      
+      <!-- Footer Links -->
+      <div class="footer-links">
+        <a class="cta-link" href="https://www.threads.com/@kahua_is" target="_blank">Threads</a>
+        <a class="cta-link" href="https://www.instagram.com/kahua_is/" target="_blank">Instagram</a>
+        <a class="cta-link" href="https://www.tiktok.com/@kahua_is" target="_blank">TikTok (@kahua_is)</a>
+        <a class="cta-link" href="https://www.tiktok.com/@kahua_world" target="_blank">TikTok (@kahua_world)</a>
+      </div>
+      <div style="margin-top: 32px; font-size: 0.75rem; color: var(--dawn-gold); font-family: 'Inter', sans-serif; letter-spacing: 0.1em; opacity: 0.6;">
+        Designed by KAHUA
       </div>
     </div>
   </section>
 
-  <!-- ====== FOOTER ====== -->
-  <footer>
-    <p>ORBITA — The City of Resonance</p>
-    <p style="margin-top: 8px;">
-      <a href="https://www.threads.com/@kahua_is">Threads</a>
-      <a href="https://www.instagram.com/kahua_is/">Instagram</a>
-      <a href="https://www.tiktok.com/@kahua_is">TikTok (@kahua_is)</a>
-      <a href="https://www.tiktok.com/@kahua_world">TikTok (@kahua_world)</a>
-    </p>
-    <p style="margin-top: 16px; color: var(--gold-dim);">Designed by KAHUA — <span data-lang-ja>深夜の設計者</span><span
-        data-lang-en>The Midnight Architect</span></p>
-  </footer>
-
+  <!-- LUXURY SCRIPTS -->
+  <script src="https://unpkg.com/@studio-freight/lenis@1.0.34/dist/lenis.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+  
   <script>
-    // ============ LANGUAGE TOGGLE ============
+    // 1. LANGUAGE TOGGLE (TRILINGUAL)
     function setLang(lang) {
       document.documentElement.lang = lang;
       document.getElementById('btnJa').classList.toggle('active', lang === 'ja');
       document.getElementById('btnEn').classList.toggle('active', lang === 'en');
+      document.getElementById('btnFr').classList.toggle('active', lang === 'fr');
       localStorage.setItem('orbita-lang-v2', lang);
+      if(typeof ScrollTrigger !== 'undefined') setTimeout(()=>ScrollTrigger.refresh(), 200);
     }
-
-    // Restore saved language
     const saved = localStorage.getItem('orbita-lang-v2');
-    if (saved) {
-      setLang(saved);
-    } else {
-      setLang('en');
-    }
+    if (saved) { setLang(saved); } else { setLang('ja'); }
 
-    // ============ PAGE LOADER ============
-    window.addEventListener('load', () => {
-      setTimeout(() => {
-        document.getElementById('pageLoader').classList.add('loaded');
-      }, 400);
+    // 2. SMOOTH SCROLL (LENIS)
+    const lenis = new Lenis({
+      duration: 1.5,
+      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+      smooth: true
+    });
+    lenis.on('scroll', ScrollTrigger.update);
+    gsap.ticker.add((time)=>{ lenis.raf(time * 1000) });
+    gsap.ticker.lagSmoothing(0);
+
+    // 3. GSAP MASKED REVEALS & PARALLAX
+    gsap.registerPlugin(ScrollTrigger);
+
+    document.querySelectorAll('section').forEach((sec) => {
+      const wrapper = sec.querySelector('.content-wrapper');
+      const lines = sec.querySelectorAll('.line-text');
+      const divider = sec.querySelector('.divider');
+      const features = sec.querySelectorAll('.city-feature');
+
+      gsap.set(wrapper, { filter: "blur(10px)", scale: 0.95, opacity: 0 });
+
+      gsap.to(wrapper, {
+        filter: "blur(0px)", scale: 1, opacity: 1,
+        duration: 1.5, ease: "power3.out",
+        scrollTrigger: { trigger: sec, start: "top 80%" }
+      });
+
+      if(divider) {
+        gsap.to(divider, { width: "120px", opacity: 0.8, duration: 1.5, ease: "power4.out", delay: 0.2, scrollTrigger: { trigger: sec, start: "top 80%" } });
+      }
+
+      if(lines.length > 0) {
+        gsap.to(lines, {
+          y: "0%", duration: 1.2, ease: "power4.out", stagger: 0.15, delay: 0.3,
+          scrollTrigger: { trigger: sec, start: "top 80%" }
+        });
+      }
+
+      if(features.length > 0) {
+        gsap.fromTo(features, 
+          { y: 50, opacity: 0 },
+          { y: 0, opacity: 1, duration: 1, ease: "power3.out", stagger: 0.15, delay: 0.4, scrollTrigger: { trigger: sec, start: "top 75%" } }
+        );
+      }
+      
+      const bg = sec.querySelector('.bg-gradient');
+      if(bg) {
+        gsap.to(bg, {
+          y: "30%", ease: "none", scrollTrigger: { trigger: sec, start: "top bottom", end: "bottom top", scrub: true }
+        });
+      }
     });
 
-    // ============ CUSTOM CURSOR ============
+    // 4. CUSTOM CURSOR
     const cursorDot = document.getElementById('cursorDot');
     const cursorRing = document.getElementById('cursorRing');
-    let mouseX = 0, mouseY = 0;
-    let ringX = 0, ringY = 0;
+    let mouseX = window.innerWidth/2, mouseY = window.innerHeight/2;
+    let ringX = window.innerWidth/2, ringY = window.innerHeight/2;
 
     document.addEventListener('mousemove', (e) => {
-      mouseX = e.clientX;
-      mouseY = e.clientY;
-      cursorDot.style.left = mouseX - 4 + 'px';
-      cursorDot.style.top = mouseY - 4 + 'px';
+      mouseX = e.clientX; mouseY = e.clientY;
+      gsap.to(cursorDot, { x: mouseX - 5, y: mouseY - 5, duration: 0.1 });
     });
-
+    
     function animateRing() {
-      ringX += (mouseX - ringX) * 0.12;
-      ringY += (mouseY - ringY) * 0.12;
-      cursorRing.style.left = ringX + 'px';
-      cursorRing.style.top = ringY + 'px';
+      ringX += (mouseX - ringX) * 0.15; ringY += (mouseY - ringY) * 0.15;
+      cursorRing.style.left = ringX + 'px'; cursorRing.style.top = ringY + 'px';
       requestAnimationFrame(animateRing);
     }
     animateRing();
 
-    document.querySelectorAll('a, button, .city-feature, .cta-link').forEach(el => {
+    document.querySelectorAll('a, button, .city-feature').forEach(el => {
       el.addEventListener('mouseenter', () => cursorRing.classList.add('hover'));
       el.addEventListener('mouseleave', () => cursorRing.classList.remove('hover'));
     });
 
-    // ============ HERO LOGO ============
-    const logoText = 'ORBITA';
-    const logoEl = document.getElementById('heroLogo');
-    logoText.split('').forEach((char, i) => {
-      const span = document.createElement('span');
-      span.className = 'letter';
-      span.textContent = char;
-      span.style.setProperty('--delay', (0.3 + i * 0.12) + 's');
-      logoEl.appendChild(span);
-    });
+    const btnWrap = document.querySelector('.btn-apply-wrap');
+    const btnApply = document.querySelector('.btn-apply');
+    if(btnWrap && btnApply) {
+      btnWrap.addEventListener('mousemove', (e) => {
+        const rect = btnWrap.getBoundingClientRect();
+        const x = e.clientX - rect.left - rect.width / 2;
+        const y = e.clientY - rect.top - rect.height / 2;
+        gsap.to(btnApply, { x: x * 0.4, y: y * 0.4, duration: 0.6, ease: 'power3.out' });
+        cursorDot.classList.add('magnetic');
+      });
+      btnWrap.addEventListener('mouseleave', () => {
+        gsap.to(btnApply, { x: 0, y: 0, duration: 0.8, ease: 'elastic.out(1, 0.3)' });
+        cursorDot.classList.remove('magnetic');
+      });
+    }
 
-    // ============ STAR FIELD ============
-    function createStarfield() {
-      const container = document.getElementById('starfield');
-      const isMobile = window.innerWidth < 768;
-      const count = isMobile ? 100 : 200;
-
-      for (let i = 0; i < count; i++) {
+    // 5. FLOATING LIGHT PARTICLES (UPWARD DAWN EFFECT)
+    const container = document.getElementById('starfield');
+    const count = window.innerWidth < 768 ? 40 : 80;
+    for (let i = 0; i < count; i++) {
         const star = document.createElement('div');
         star.className = 'star';
-        const size = Math.random() * 2 + 0.5;
+        const size = Math.random() * 3 + 1;
         star.style.width = size + 'px';
         star.style.height = size + 'px';
         star.style.left = Math.random() * 100 + '%';
-        star.style.top = Math.random() * 100 + '%';
-        star.style.setProperty('--duration', (Math.random() * 4 + 2) + 's');
-        star.style.setProperty('--min-opacity', '0.1');
-        star.style.setProperty('--max-opacity', (Math.random() * 0.6 + 0.3).toString());
-        star.style.animationDelay = Math.random() * 4 + 's';
-
-        // Each star drifts on its own random path
-        const d = 30 + Math.random() * 40;
-        star.style.setProperty('--drift-duration', (40 + Math.random() * 60) + 's');
-        star.style.setProperty('--dx1', (Math.random() * d - d / 2) + 'px');
-        star.style.setProperty('--dy1', (Math.random() * d - d / 2) + 'px');
-        star.style.setProperty('--dx2', (Math.random() * d - d / 2) + 'px');
-        star.style.setProperty('--dy2', (Math.random() * d - d / 2) + 'px');
-        star.style.setProperty('--dx3', (Math.random() * d - d / 2) + 'px');
-        star.style.setProperty('--dy3', (Math.random() * d - d / 2) + 'px');
-
-        if (Math.random() > 0.85) {
-          star.style.background = '#FFD700';
-        }
-
+        star.style.background = (Math.random() > 0.5) ? 'var(--dawn-gold)' : 'var(--white)';
+        
+        star.style.setProperty('--duration', (Math.random() * 3 + 2) + 's');
+        star.style.setProperty('--drift-duration', (15 + Math.random() * 20) + 's');
+        star.style.setProperty('--max-opacity', (Math.random() * 0.5 + 0.3).toString());
+        star.style.animationDelay = '-' + (Math.random() * 30) + 's';
+        
         container.appendChild(star);
-      }
     }
-
-    // ============ SHOOTING STARS ============
-    function spawnShootingStar() {
-      const star = document.createElement('div');
-      star.className = 'shooting-star';
-      star.style.left = (40 + Math.random() * 50) + '%';
-      star.style.top = (5 + Math.random() * 30) + '%';
-      const shootX = -(200 + Math.random() * 300);
-      const shootY = 150 + Math.random() * 200;
-      star.style.setProperty('--shoot-x', shootX + 'px');
-      star.style.setProperty('--shoot-y', shootY + 'px');
-      star.style.setProperty('--shoot-duration', (0.8 + Math.random() * 0.6) + 's');
-      star.style.setProperty('--angle', Math.atan2(shootY, shootX) * (180 / Math.PI) + 'deg');
-      document.body.appendChild(star);
-      requestAnimationFrame(() => star.classList.add('active'));
-      setTimeout(() => star.remove(), 2000);
-    }
-
-    function startShootingStars() {
-      function next() {
-        setTimeout(() => { spawnShootingStar(); next(); }, 4000 + Math.random() * 6000);
-      }
-      setTimeout(() => { spawnShootingStar(); next(); }, 3000);
-    }
-
-    // ============ GOLD PARTICLES ============
-    function createParticles() {
-      const container = document.getElementById('particles');
-      const count = window.innerWidth < 768 ? 8 : 20;
-
-      for (let i = 0; i < count; i++) {
-        const p = document.createElement('div');
-        p.className = 'particle';
-        p.style.left = Math.random() * 100 + '%';
-        p.style.bottom = '-10px';
-        p.style.setProperty('--float-duration', (Math.random() * 12 + 10) + 's');
-        p.style.setProperty('--float-delay', (Math.random() * 10) + 's');
-        p.style.setProperty('--drift', (Math.random() * 60 - 30) + 'px');
-        const size = Math.random() * 2 + 1;
-        p.style.width = size + 'px';
-        p.style.height = size + 'px';
-        container.appendChild(p);
-      }
-    }
-
-    // ============ SCROLL REVEAL ============
-    function setupReveal() {
-      const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting) {
-            const parent = entry.target.parentElement;
-            const siblings = parent.querySelectorAll('.reveal');
-            let index = 0;
-            siblings.forEach((sib, i) => { if (sib === entry.target) index = i; });
-            entry.target.style.setProperty('--stagger', (index * 0.12) + 's');
-            entry.target.classList.add('visible');
-          }
-        });
-      }, { threshold: 0.12 });
-
-      document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
-    }
-
-    // ============ ZERO GLOW ============
-    function setupZeroGlow() {
-      const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting) entry.target.classList.add('visible');
-        });
-      }, { threshold: 0.5 });
-
-      document.querySelectorAll('.zero-item').forEach(el => observer.observe(el));
-    }
-
-    // ============ INIT ============
-    createStarfield();
-    createParticles();
-    startShootingStars();
-    setupReveal();
-    setupZeroGlow();
   </script>
-
 </body>
-
 </html>
