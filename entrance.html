@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ORBITA — The Bright Dimension</title>
+  <meta name="description" content="A sanctuary of euphoria and optimism.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Noto+Serif+JP:wght@300;400;700&family=Inter:wght@300;400&display=swap" rel="stylesheet">
+  
+  <style>
+    /* ============ RESET & BASE ============ */
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    :root {
+      --void: #0a0a14;
+      --indigo: #15132a;
+      --dawn: #3d1b2b;
+      --dawn-gold: #ffb84d;
+      --gold: #FFD700;
+      --gold-dim: rgba(255, 215, 0, 0.3);
+      --white: #fdfcf9;
+      --white-dim: rgba(253, 252, 249, 0.7);
+    }
+    
+    html.lenis, html.lenis body { height: auto; }
+    .lenis.lenis-smooth { scroll-behavior: auto !important; }
+    .lenis.lenis-smooth [data-lenis-prevent] { overscroll-behavior: contain; }
+    .lenis.lenis-stopped { overflow: hidden; }
+    .lenis.lenis-scrolling iframe { pointer-events: none; }
+
+    body {
+      background: var(--void);
+      color: var(--white);
+      font-family: 'Noto Serif JP', serif;
+      line-height: 1.9;
+      overflow-x: hidden;
+      cursor: none;
+    }
+
+    /* ============ BACKGROUND EXTRAS (DAWN EFFECT) ============ */
+    .bg-gradient {
+      position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none;
+    }
+    #step1 .bg-gradient { background: radial-gradient(ellipse at 50% 120%, var(--dawn) 0%, var(--void) 80%); }
+    #step2 .bg-gradient { background: var(--void); }
+    #step3 .bg-gradient { background: linear-gradient(180deg, var(--void) 0%, var(--indigo) 50%, var(--void) 100%); }
+    #step4 .bg-gradient { background: radial-gradient(ellipse at 50% 120%, var(--dawn) 0%, var(--void) 80%); }
+    #step5 .bg-gradient { background: var(--void); }
+
+    /* ============ LANGUAGE TOGGLE ============ */
+    .lang-toggle { position: fixed; top: 24px; right: 24px; z-index: 100; display: flex; border: 1px solid var(--gold-dim); border-radius: 4px; backdrop-filter: blur(12px); background: rgba(10, 10, 20, 0.5); cursor: none;}
+    .lang-btn { padding: 8px 16px; background: transparent; border: none; color: var(--white-dim); font-family: 'Inter', sans-serif; font-size: 0.75rem; letter-spacing: 0.15em; cursor: none; transition: all 0.3s ease; }
+    .lang-btn.active { background: var(--dawn-gold); color: var(--void); font-weight: 500; }
+    
+    html[lang="en"] .ja, html[lang="en"] .fr,
+    html[lang="ja"] .en, html[lang="ja"] .fr,
+    html[lang="fr"] .ja, html[lang="fr"] .en { display: none !important; }
+    html[lang="en"] body, html[lang="fr"] body { font-family: 'Playfair Display', 'Inter', serif; }
+
+    /* ============ CUSTOM CURSOR ============ */
+    .cursor-dot { width: 10px; height: 10px; background: var(--dawn-gold); border-radius: 50%; position: fixed; pointer-events: none; z-index: 9999; box-shadow: 0 0 25px rgba(255, 184, 77, 0.6); mix-blend-mode: screen; filter: blur(0px); transition: filter 0.2s, transform 0.2s; }
+    .cursor-ring { width: 44px; height: 44px; border: 1px solid rgba(255, 184, 77, 0.4); border-radius: 50%; position: fixed; pointer-events: none; z-index: 9998; transform: translate(-50%, -50%); transition: width 0.3s ease, height 0.3s ease, border-color 0.3s ease; }
+    .cursor-ring.hover { width: 72px; height: 72px; border-color: var(--dawn-gold); background: rgba(255,184,77,0.05); }
+    .cursor-dot.magnetic { transform: scale(0.6); filter: blur(2px); }
+
+    /* ============ FLOATING LIGHT PARTICLES ============ */
+    .starfield { position: fixed; top: 0; left: 0; width: 100%; height: 100vh; z-index: 0; pointer-events: none; }
+    .star { position: absolute; border-radius: 50%; animation: floatUp var(--drift-duration, 20s) linear infinite, glowPulse var(--duration) ease-in-out infinite; box-shadow: 0 0 8px var(--dawn-gold); }
+    @keyframes floatUp { 0% { transform: translateY(110vh) scale(0.5); opacity: 0; } 10% { opacity: var(--max-opacity); } 90% { opacity: var(--max-opacity); } 100% { transform: translateY(-10vh) scale(1.5); opacity: 0; } }
+    @keyframes glowPulse { 0%, 100% { filter: brightness(0.8); } 50% { filter: brightness(1.5); } }
+
+    /* ============ SECTIONS & TYPOGRAPHY ============ */
+    section { position: relative; z-index: 1; min-height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 40px 24px; text-align: center; overflow: hidden; }
+    .content-wrapper { max-width: 720px; width: 100%; position: relative; z-index: 2; }
+    
+    .entrance-title { font-family: 'Playfair Display', serif; font-size: clamp(1.6rem, 4vw, 2.6rem); font-weight: 400; color: var(--dawn-gold); letter-spacing: 0.05em; margin-bottom: 24px; }
+    .entrance-text { font-size: clamp(1rem, 2.5vw, 1.3rem); color: var(--white); font-weight: 300; line-height: 2.2; letter-spacing: 0.05em; }
+    .quote-style { font-size: clamp(1.1rem, 2.5vw, 1.4rem); color: var(--white); font-weight: 300; line-height: 2.2; }
+    .en, .fr { font-style: italic; }
+
+    .gold-highlight { color: var(--dawn-gold); font-weight: 400; text-shadow: 0 0 15px rgba(255, 184, 77, 0.4); }
+    .divider { width: 80px; height: 1px; background: linear-gradient(to right, transparent, var(--dawn-gold), transparent); margin: 60px auto; opacity: 0; }
+
+    /* GSAP Mask Reveals */
+    .line-mask { display: inline-block; overflow: hidden; vertical-align: bottom; padding-bottom: 4px; }
+    .line-text { display: inline-block; transform: translateY(120%); will-change: transform; transition: opacity 0.5s; }
+
+    /* ============ BUTTON MAGNETIC ============ */
+    .btn-apply-wrap { display: inline-block; margin-top: 60px; padding: 20px; }
+    .btn-apply { display: inline-block; padding: 18px 48px; border: 1px solid var(--dawn-gold); color: var(--dawn-gold); text-decoration: none; font-size: 0.95rem; letter-spacing: 0.2em; transition: background 0.5s, color 0.5s, box-shadow 0.5s; position: relative; overflow: hidden; background: rgba(61, 27, 43, 0.2); cursor: none;}
+    .btn-apply::before { content: ''; position: absolute; top: 50%; left: 50%; width: 0; height: 0; background: radial-gradient(circle, rgba(255, 184, 77, 0.2) 0%, transparent 70%); border-radius: 50%; transform: translate(-50%, -50%); transition: width 0.6s ease, height 0.6s ease; pointer-events: none; }
+    .btn-apply:hover::before { width: 400px; height: 400px; }
+    .btn-apply:hover { background: var(--dawn-gold); color: var(--void); box-shadow: 0 0 40px rgba(255, 184, 77, 0.3); font-weight: 500; }
+
+    /* Scroll Hint */
+    .scroll-down { position: absolute; bottom: 40px; left: 50%; transform: translateX(-50%); text-align: center; opacity: 0; animation: fadeUp 1s ease 2.5s forwards; }
+    .scroll-line { width: 1px; height: 60px; background: linear-gradient(to bottom, var(--dawn-gold), transparent); margin: 0 auto; animation: pulseLine 2s infinite; }
+    @keyframes pulseLine { 0% { transform: scaleY(0.2); transform-origin: top; opacity: 0; } 50% { transform: scaleY(1); opacity: 1; } 100% { transform: scaleY(1); transform-origin: bottom; opacity: 0; } }
+    @keyframes fadeUp { to { opacity: 1; } }
+
+    @media (max-width: 768px) {
+      .cursor-dot, .cursor-ring { display: none; }
+      body, .btn-apply, .lang-btn { cursor: auto; }
+      .lang-toggle { top: 12px; right: 12px; }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="lang-toggle">
+    <button class="lang-btn" id="btnEn" onclick="setLang('en')">EN</button>
+    <button class="lang-btn" id="btnFr" onclick="setLang('fr')">FR</button>
+    <button class="lang-btn active" id="btnJa" onclick="setLang('ja')">JP</button>
+  </div>
+
+  <div class="cursor-dot" id="cursorDot"></div>
+  <div class="cursor-ring" id="cursorRing"></div>
+  <div class="starfield" id="starfield"></div>
+
+  <!-- STEP 1: The Question -->
+  <section id="step1">
+    <div class="bg-gradient"></div>
+    <div class="content-wrapper">
+      <div class="ja">
+        <p class="entrance-text">
+          <span class="line-mask"><span class="line-text">「数字」を忘れたとき、私たちはもっと</span></span><br>
+          <span class="line-mask"><span class="line-text"><span class="gold-highlight">身軽に生まれ変わる</span>。</span></span>
+        </p>
+      </div>
+      <div class="en">
+        <p class="entrance-text en">
+          <span class="line-mask"><span class="line-text">When we forget "numbers",</span></span><br>
+          <span class="line-mask"><span class="line-text">we are reborn <span class="gold-highlight">light and free</span>.</span></span>
+        </p>
+      </div>
+      <div class="fr">
+        <p class="entrance-text fr">
+          <span class="line-mask"><span class="line-text">Quand nous oublions les « chiffres »,</span></span><br>
+          <span class="line-mask"><span class="line-text">nous renaissons <span class="gold-highlight">légers et libres</span>.</span></span>
+        </p>
+      </div>
+    </div>
+    <div class="scroll-down"><div class="scroll-line"></div></div>
+  </section>
+
+  <!-- STEP 2: The Origin -->
+  <section id="step2">
+    <div class="bg-gradient"></div>
+    <div class="content-wrapper">
+      <div class="divider"></div>
+      <div class="ja">
+        <p class="quote-style">
+          <span class="line-mask"><span class="line-text">執着を手放し、ただ純粋に遊ぶように生きる。</span></span>
+        </p>
+        <p class="quote-style" style="margin-top: 24px;">
+          <span class="line-mask"><span class="line-text">ここは、圧倒的な<span class="gold-highlight">多幸感と自由</span>のための都市。</span></span>
+        </p>
+      </div>
+      <div class="en">
+        <p class="quote-style en">
+          <span class="line-mask"><span class="line-text">Release all attachments. Live playfully, purely.</span></span>
+        </p>
+        <p class="quote-style en" style="margin-top: 24px;">
+          <span class="line-mask"><span class="line-text">This is a city built for overwhelming <span class="gold-highlight">euphoria and freedom</span>.</span></span>
+        </p>
+      </div>
+      <div class="fr">
+        <p class="quote-style fr">
+          <span class="line-mask"><span class="line-text">Relâchez tout attachement. Vivez ludiquement, purement.</span></span>
+        </p>
+        <p class="quote-style fr" style="margin-top: 24px;">
+          <span class="line-mask"><span class="line-text">Ceci est une ville bâtie pour une immense <span class="gold-highlight">euphorie et liberté</span>.</span></span>
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- STEP 3: The Rules -->
+  <section id="step3">
+    <div class="bg-gradient"></div>
+    <div class="content-wrapper">
+      <div class="divider"></div>
+      <div class="ja">
+        <p class="entrance-title">
+          <span class="line-mask"><span class="line-text">広告ゼロ。競争ゼロ。いいねゼロ。</span></span>
+        </p>
+        <p class="entrance-text" style="margin-top: 32px;">
+          <span class="line-mask"><span class="line-text">あなたを過去へ縛り付ける重力は、</span></span><br>
+          <span class="line-mask"><span class="line-text">ここには<span class="gold-highlight">存在しません</span>。</span></span>
+        </p>
+      </div>
+      <div class="en">
+        <p class="entrance-title en">
+          <span class="line-mask"><span class="line-text">Zero ads. Zero competition. Zero likes.</span></span>
+        </p>
+        <p class="entrance-text en" style="margin-top: 32px;">
+          <span class="line-mask"><span class="line-text">The gravity that binds you to the past</span></span><br>
+          <span class="line-mask"><span class="line-text"><span class="gold-highlight">does not exist here</span>.</span></span>
+        </p>
+      </div>
+      <div class="fr">
+        <p class="entrance-title fr">
+          <span class="line-mask"><span class="line-text">Zéro publicité. Zéro compétition. Zéro like.</span></span>
+        </p>
+        <p class="entrance-text fr" style="margin-top: 32px;">
+          <span class="line-mask"><span class="line-text">La gravité qui vous lie au passé</span></span><br>
+          <span class="line-mask"><span class="line-text"><span class="gold-highlight">n'existe pas ici</span>.</span></span>
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- STEP 4: The Map (Core Concept) -->
+  <section id="step4">
+    <div class="bg-gradient"></div>
+    <div class="content-wrapper">
+      <div class="divider"></div>
+      <div class="ja">
+        <p class="entrance-text">
+          <span class="line-mask"><span class="line-text">重力を手放し、軽やかに。</span></span><br>
+          <span class="line-mask"><span class="line-text">あらゆる執着から解き放たれ、</span></span>
+        </p>
+        <p class="entrance-text" style="margin-top: 32px;">
+          <span class="line-mask"><span class="line-text"><span class="gold-highlight">しなやかに未来を泳ぐ</span>。</span></span>
+        </p>
+      </div>
+      <div class="en">
+        <p class="entrance-text en">
+          <span class="line-mask"><span class="line-text">Release the gravity, dwell in lightness.</span></span><br>
+          <span class="line-mask"><span class="line-text">Untethered from all attachments,</span></span>
+        </p>
+        <p class="entrance-text en" style="margin-top: 32px;">
+          <span class="line-mask"><span class="line-text"><span class="gold-highlight">glide with fluid grace into the future</span>.</span></span>
+        </p>
+      </div>
+      <div class="fr">
+        <p class="entrance-text fr">
+          <span class="line-mask"><span class="line-text">S’affranchir de la gravité, en toute légèreté.</span></span><br>
+          <span class="line-mask"><span class="line-text">Libéré de tout attachement,</span></span>
+        </p>
+        <p class="entrance-text fr" style="margin-top: 32px;">
+          <span class="line-mask"><span class="line-text"><span class="gold-highlight">glisser avec souplesse vers l'avenir</span>.</span></span>
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- STEP 5: The Gate -->
+  <section id="step5">
+    <div class="bg-gradient"></div>
+    <div class="content-wrapper">
+      <div class="divider"></div>
+      <div class="ja">
+        <p class="entrance-text">
+          <span class="line-mask"><span class="line-text">もっと楽天的に。もっと自由に。</span></span>
+        </p>
+        <p class="entrance-text" style="margin-top: 32px;">
+          <span class="line-mask"><span class="line-text">もしこの軽やかな次元に共鳴するなら、</span></span><br>
+          <span class="line-mask"><span class="line-text">あなたの心を少しだけ、見せてください。</span></span>
+        </p>
+      </div>
+      <div class="en">
+        <p class="entrance-text en">
+          <span class="line-mask"><span class="line-text">More optimistic. Lighter. Freer.</span></span>
+        </p>
+        <p class="entrance-text en" style="margin-top: 32px;">
+          <span class="line-mask"><span class="line-text">If your heart resonates with this bright dimension,</span></span><br>
+          <span class="line-mask"><span class="line-text">please show us a glimpse of your mind.</span></span>
+        </p>
+      </div>
+      <div class="fr">
+        <p class="entrance-text fr">
+          <span class="line-mask"><span class="line-text">Plus optimiste. Plus léger. Plus libre.</span></span>
+        </p>
+        <p class="entrance-text fr" style="margin-top: 32px;">
+          <span class="line-mask"><span class="line-text">Si votre cœur résonne avec cette dimension lumineuse,</span></span><br>
+          <span class="line-mask"><span class="line-text">veuillez nous montrer un aperçu de votre esprit.</span></span>
+        </p>
+      </div>
+      
+      <div class="btn-apply-wrap">
+        <a href="#" class="btn-apply">
+          <span class="ja">共鳴する（入国）</span>
+          <span class="en">Resonate (Enter)</span>
+          <span class="fr">Résonner (Entrer)</span>
+        </a>
+      </div>
+      
+      <div style="margin-top: 80px;">
+        <a href="index.html" class="nav-back" style="color: var(--white-dim); text-decoration: none; font-size: 0.8rem; letter-spacing: 0.2em;">
+          ← 
+          <span class="ja">街の入り口に戻る</span>
+          <span class="en">Return to the Gate</span>
+          <span class="fr">Retour à la Porte</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- LUXURY SCRIPTS -->
+  <script src="https://unpkg.com/@studio-freight/lenis@1.0.34/dist/lenis.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+  
+  <script>
+    // 1. LANGUAGE TOGGLE (TRILINGUAL)
+    function setLang(lang) {
+      document.documentElement.lang = lang;
+      document.getElementById('btnJa').classList.toggle('active', lang === 'ja');
+      document.getElementById('btnEn').classList.toggle('active', lang === 'en');
+      document.getElementById('btnFr').classList.toggle('active', lang === 'fr');
+      localStorage.setItem('orbita-lang-v2', lang);
+      if(typeof ScrollTrigger !== 'undefined') setTimeout(()=>ScrollTrigger.refresh(), 200);
+    }
+    const saved = localStorage.getItem('orbita-lang-v2');
+    if (saved) { setLang(saved); } else { setLang('ja'); }
+
+    // 2. SMOOTH SCROLL (LENIS)
+    const lenis = new Lenis({
+      duration: 1.5,
+      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+      smooth: true
+    });
+    lenis.on('scroll', ScrollTrigger.update);
+    gsap.ticker.add((time)=>{ lenis.raf(time * 1000) });
+    gsap.ticker.lagSmoothing(0);
+
+    // 3. GSAP MASKED REVEALS & PARALLAX
+    gsap.registerPlugin(ScrollTrigger);
+
+    document.querySelectorAll('section').forEach((sec) => {
+      const wrapper = sec.querySelector('.content-wrapper');
+      const lines = sec.querySelectorAll('.line-text');
+      const divider = sec.querySelector('.divider');
+
+      gsap.set(wrapper, { filter: "blur(10px)", scale: 0.95, opacity: 0 });
+
+      gsap.to(wrapper, {
+        filter: "blur(0px)", scale: 1, opacity: 1,
+        duration: 1.5, ease: "power3.out",
+        scrollTrigger: { trigger: sec, start: "top 80%" }
+      });
+
+      if(divider) {
+        gsap.to(divider, { width: "120px", opacity: 0.8, duration: 1.5, ease: "power4.out", delay: 0.2, scrollTrigger: { trigger: sec, start: "top 80%" } });
+      }
+
+      gsap.to(lines, {
+        y: "0%", duration: 1.2, ease: "power4.out", stagger: 0.15, delay: 0.3,
+        scrollTrigger: { trigger: sec, start: "top 80%" }
+      });
+      
+      const bg = sec.querySelector('.bg-gradient');
+      if(bg) {
+        gsap.to(bg, {
+          y: "30%", ease: "none", scrollTrigger: { trigger: sec, start: "top bottom", end: "bottom top", scrub: true }
+        });
+      }
+    });
+
+    // 4. CUSTOM CURSOR
+    const cursorDot = document.getElementById('cursorDot');
+    const cursorRing = document.getElementById('cursorRing');
+    let mouseX = window.innerWidth/2, mouseY = window.innerHeight/2;
+    let ringX = window.innerWidth/2, ringY = window.innerHeight/2;
+
+    document.addEventListener('mousemove', (e) => {
+      mouseX = e.clientX; mouseY = e.clientY;
+      gsap.to(cursorDot, { x: mouseX - 5, y: mouseY - 5, duration: 0.1 });
+    });
+    
+    function animateRing() {
+      ringX += (mouseX - ringX) * 0.15; ringY += (mouseY - ringY) * 0.15;
+      cursorRing.style.left = ringX + 'px'; cursorRing.style.top = ringY + 'px';
+      requestAnimationFrame(animateRing);
+    }
+    animateRing();
+
+    document.querySelectorAll('a, button').forEach(el => {
+      el.addEventListener('mouseenter', () => cursorRing.classList.add('hover'));
+      el.addEventListener('mouseleave', () => cursorRing.classList.remove('hover'));
+    });
+
+    const btnWrap = document.querySelector('.btn-apply-wrap');
+    const btnApply = document.querySelector('.btn-apply');
+    if(btnWrap && btnApply) {
+      btnWrap.addEventListener('mousemove', (e) => {
+        const rect = btnWrap.getBoundingClientRect();
+        const x = e.clientX - rect.left - rect.width / 2;
+        const y = e.clientY - rect.top - rect.height / 2;
+        gsap.to(btnApply, { x: x * 0.4, y: y * 0.4, duration: 0.6, ease: 'power3.out' });
+        cursorDot.classList.add('magnetic');
+      });
+      btnWrap.addEventListener('mouseleave', () => {
+        gsap.to(btnApply, { x: 0, y: 0, duration: 0.8, ease: 'elastic.out(1, 0.3)' });
+        cursorDot.classList.remove('magnetic');
+      });
+    }
+
+    // 5. FLOATING LIGHT PARTICLES (UPWARD DAWN EFFECT)
+    const container = document.getElementById('starfield');
+    const count = window.innerWidth < 768 ? 40 : 80;
+    for (let i = 0; i < count; i++) {
+        const star = document.createElement('div');
+        star.className = 'star';
+        const size = Math.random() * 3 + 1;
+        star.style.width = size + 'px';
+        star.style.height = size + 'px';
+        star.style.left = Math.random() * 100 + '%';
+        star.style.background = (Math.random() > 0.5) ? 'var(--dawn-gold)' : 'var(--white)';
+        
+        star.style.setProperty('--duration', (Math.random() * 3 + 2) + 's');
+        star.style.setProperty('--drift-duration', (15 + Math.random() * 20) + 's');
+        star.style.setProperty('--max-opacity', (Math.random() * 0.5 + 0.3).toString());
+        star.style.animationDelay = '-' + (Math.random() * 30) + 's';
+        
+        container.appendChild(star);
+    }
+  </script>
+</body>
+</html>
