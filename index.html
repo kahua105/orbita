@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ja">
+<html lang="en">
 
 <head>
   <meta charset="UTF-8">
@@ -83,97 +83,13 @@
       color: var(--gold);
     }
 
-    /* Language show/hide */
-    [data-lang-en] {
-      display: none;
-    }
-
-    [data-lang-ja] {
-      display: inline;
-    }
-
-    html[lang="en"] [data-lang-en] {
-      display: inline;
-    }
-
+    /* Language show/hide using high-specificity overrides */
     html[lang="en"] [data-lang-ja] {
-      display: none;
+      display: none !important;
     }
 
-    html[lang="en"] .line[data-lang-en] {
-      display: block;
-    }
-
-    html[lang="en"] .line[data-lang-ja] {
-      display: none;
-    }
-
-    html[lang="en"] .loss-item[data-lang-en] {
-      display: block;
-    }
-
-    html[lang="en"] .loss-item[data-lang-ja] {
-      display: none;
-    }
-
-    html[lang="en"] p[data-lang-en] {
-      display: block;
-    }
-
-    html[lang="en"] p[data-lang-ja] {
-      display: none;
-    }
-
-    html[lang="en"] .body-text[data-lang-en] {
-      display: block;
-    }
-
-    html[lang="en"] .body-text[data-lang-ja] {
-      display: none;
-    }
-
-    html[lang="en"] .big-question[data-lang-en] {
-      display: block;
-    }
-
-    html[lang="en"] .big-question[data-lang-ja] {
-      display: none;
-    }
-
-    html[lang="en"] .quote-text[data-lang-en] {
-      display: block;
-    }
-
-    html[lang="en"] .quote-text[data-lang-ja] {
-      display: none;
-    }
-
-    html[lang="en"] .cta-text[data-lang-en] {
-      display: block;
-    }
-
-    html[lang="en"] .cta-text[data-lang-ja] {
-      display: none;
-    }
-
-    html[lang="ja"] .loss-item[data-lang-en] {
-      display: none;
-    }
-
-    html[lang="ja"] .big-question[data-lang-en] {
-      display: none;
-    }
-
-    html[lang="ja"] .body-text[data-lang-en] {
-      display: none;
-    }
-
-    html[lang="ja"] .quote-text[data-lang-en] {
-      display: none;
-    }
-
-    html[lang="ja"] .cta-text[data-lang-en] {
-      display: none;
+    html[lang="ja"] [data-lang-en] {
+      display: none !important;
     }
 
     html[lang="en"] body {
@@ -1007,8 +923,8 @@
 
   <!-- LANGUAGE TOGGLE -->
   <div class="lang-toggle">
-    <button class="lang-btn active" id="btnJa" onclick="setLang('ja')">JP</button>
-    <button class="lang-btn" id="btnEn" onclick="setLang('en')">EN</button>
+    <button class="lang-btn" id="btnJa" onclick="setLang('ja')">JP</button>
+    <button class="lang-btn active" id="btnEn" onclick="setLang('en')">EN</button>
   </div>
 
   <!-- CUSTOM CURSOR -->
@@ -1227,30 +1143,48 @@
       <p class="section-title-jp reveal" style="text-align: center;" data-lang-ja>5層同心円の都市構造</p>
       <p class="section-title-jp reveal" style="text-align: center;" data-lang-en>Five Concentric Rings</p>
 
-      <div class="city-features reveal">
+    <div class="city-features reveal">
         <div class="city-feature">
           <div class="city-feature-icon">🏮</div>
           <div class="city-feature-name"><span data-lang-ja>星闇市</span><span data-lang-en>Star Night Market</span></div>
-          <div class="city-feature-desc"><span data-lang-ja>Star Night Market<br>値札なし。物語で贈る</span><span data-lang-en>No
-              price tags.<br>Gifts come with stories.</span></div>
+          <div class="city-feature-desc"><span data-lang-ja>値札なし。物語で贈る</span><span data-lang-en>No price tags. Gifts come with stories.</span></div>
         </div>
         <div class="city-feature">
           <div class="city-feature-icon">🌲</div>
-          <div class="city-feature-name"><span data-lang-ja>深森聖域</span><span data-lang-en>Deep Forest Sanctuary</span>
-          </div>
-          <div class="city-feature-desc"><span data-lang-ja>Deep Forest Sanctuary<br>木が来訪者に傾く</span><span
-              data-lang-en>Trees bow<br>to those who enter.</span></div>
+          <div class="city-feature-name"><span data-lang-ja>深森聖域</span><span data-lang-en>Deep Forest Sanctuary</span></div>
+          <div class="city-feature-desc"><span data-lang-ja>木が来訪者に傾く</span><span data-lang-en>Trees bow to those who enter.</span></div>
         </div>
         <div class="city-feature">
           <div class="city-feature-icon">🪞</div>
           <div class="city-feature-name"><span data-lang-ja>水鏡湖</span><span data-lang-en>Mirror Lake</span></div>
-          <div class="city-feature-desc"><span data-lang-ja>Mirror Lake<br>絶対静寂の中心</span><span data-lang-en>The
-              center<br>of absolute silence.</span></div>
+          <div class="city-feature-desc"><span data-lang-ja>絶対静寂の中心</span><span data-lang-en>The center of absolute silence.</span></div>
         </div>
         <div class="city-feature">
           <div class="city-feature-icon">🍵</div>
-          <div class="city-feature-name"><span data-lang-ja>星静庵</span><span data-lang-en>Star Silence Tea Room</span>
-          </div>
+          <div class="city-feature-name"><span data-lang-ja>星静庵</span><span data-lang-en>Star Silence Tea Room</span></div>
+          <div class="city-feature-desc"><span data-lang-ja>一人の時間を守る</span><span data-lang-en>A sanctuary for solitude.</span></div>
+        </div>
+        <div class="city-feature">
+          <div class="city-feature-icon">🏛️</div>
+          <div class="city-feature-name"><span data-lang-ja>テクノ未来美術館</span><span data-lang-en>Techno Future Museum</span></div>
+          <div class="city-feature-desc"><span data-lang-ja>技術と精神の融合</span><span data-lang-en>Where technology meets spirit.</span></div>
+        </div>
+        <div class="city-feature">
+          <div class="city-feature-icon">📚</div>
+          <div class="city-feature-name"><span data-lang-ja>変容の図書館</span><span data-lang-en>Library of Transformation</span></div>
+          <div class="city-feature-desc"><span data-lang-ja>沈黙の中で知を知る</span><span data-lang-en>Discover wisdom in silence.</span></div>
+        </div>
+        <div class="city-feature">
+          <div class="city-feature-icon">🎭</div>
+          <div class="city-feature-name"><span data-lang-ja>円形劇場</span><span data-lang-en>Amphitheater</span></div>
+          <div class="city-feature-desc"><span data-lang-ja>共鳴を分かち合う場所</span><span data-lang-en>A place to share resonance.</span></div>
+        </div>
+        <div class="city-feature">
+          <div class="city-feature-icon">⚓</div>
+          <div class="city-feature-name"><span data-lang-ja>帰還の港</span><span data-lang-en>The Port of Return</span></div>
+          <div class="city-feature-desc"><span data-lang-ja>実存を携え、次へ進む</span><span data-lang-en>Set sail with your dignity.</span></div>
+        </div>
+      </div>
           <div class="city-feature-desc"><span data-lang-ja>Star Silence Tea Room<br>一人の時間を守る</span><span data-lang-en>A
               sanctuary<br>for solitude.</span></div>
         </div>
@@ -1276,7 +1210,7 @@
       <div class="divider"></div>
       <p class="quote-text" data-lang-ja>
         「これ以上人間らしさを失うのは、<br>少し味気ない。<br><br>
-        だからこそ、今ここに<br>存在をしていい場所をつくりたい。」
+        だからこそ、今ここに<br>存在をしていい場所を。」
       </p>
       <p class="quote-text" data-lang-en>
         "Losing any more of our humanity<br>feels a little too bland.<br><br>
@@ -1334,12 +1268,16 @@
       document.documentElement.lang = lang;
       document.getElementById('btnJa').classList.toggle('active', lang === 'ja');
       document.getElementById('btnEn').classList.toggle('active', lang === 'en');
-      localStorage.setItem('orbita-lang', lang);
+      localStorage.setItem('orbita-lang-v2', lang);
     }
 
     // Restore saved language
-    const saved = localStorage.getItem('orbita-lang');
-    if (saved) setLang(saved);
+    const saved = localStorage.getItem('orbita-lang-v2');
+    if (saved) {
+      setLang(saved);
+    } else {
+      setLang('en');
+    }
 
     // ============ PAGE LOADER ============
     window.addEventListener('load', () => {
